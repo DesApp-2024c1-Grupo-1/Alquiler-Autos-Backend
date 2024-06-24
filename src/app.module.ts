@@ -11,14 +11,17 @@ import { Cliente } from './models/Cliente';
 import { Alquiler } from './models/Alquiler';
 import { AlquilerController } from './controllers/alquiler/alquiler.controller';
 import { AlquilerService } from './services/alquiler/alquiler.service';
+import { EventoService } from './services/evento/evento.service';
+import { Evento } from './models/Evento';
+import { EventoController } from './controllers/evento/evento.controller';
 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
-    TypeOrmModule.forFeature([Car, Cliente, Alquiler])
+    TypeOrmModule.forFeature([Car, Cliente, Alquiler, Evento])
   ],
-  controllers: [CarController, ClienteController, AlquilerController],
-  providers: [AppService, CarService, ClienteService, AlquilerService]
+  controllers: [CarController, ClienteController, AlquilerController, EventoController],
+  providers: [AppService, CarService, ClienteService, AlquilerService, EventoService]
 })
 export class AppModule {}
