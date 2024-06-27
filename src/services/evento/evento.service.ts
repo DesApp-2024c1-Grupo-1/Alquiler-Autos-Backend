@@ -17,8 +17,21 @@ export class EventoService {
     }
 
     createEventosFromAlquiler(alquiler : Alquiler): Promise<Evento>[] {
-        const eventoRetiro = new Evento(alquiler.fechaRetiro, alquiler.fechaRetiro, alquiler.car.patente, "#00ff00", EventoType.Retiro,alquiler)
-        const eventoDevolucion = new Evento(alquiler.fechaDevolucion, alquiler.fechaDevolucion, alquiler.car.patente, "#ff0000", EventoType.Devolucion, alquiler);
+        const eventoRetiro = new Evento(
+            alquiler.fechaRetiro, 
+            alquiler.fechaRetiro, 
+            EventoType.Retiro + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
+            "#00ff00", 
+            EventoType.Retiro,
+            alquiler)
+
+        const eventoDevolucion = new Evento(
+            alquiler.fechaDevolucion, 
+            alquiler.fechaDevolucion, 
+            EventoType.Devolucion + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
+            "#ff0000", 
+            EventoType.Devolucion,
+            alquiler)
         
         return [this.eventoRepository.save(eventoRetiro),this.eventoRepository.save(eventoDevolucion)]
     }
