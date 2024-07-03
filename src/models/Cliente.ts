@@ -2,6 +2,7 @@ import { Entity } from 'typeorm';
 import { PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Column } from 'typeorm';
 import { Alquiler } from './Alquiler';
+import { ClienteDTO } from './DTO/ClienteDTO';
 
 @Entity()
 export class Cliente {
@@ -22,5 +23,10 @@ export class Cliente {
 
     @OneToMany(() => Alquiler, (alquiler) => alquiler.cliente)
     alquiler: Alquiler[];
+
+    // public toEntity(): Cliente {
+    //     console.log("Le estas pifiando")
+    //     return new Cliente();
+    // }
 
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/models/Alquiler';
 import { Evento } from 'src/models/Evento';
-import { EventoType } from 'src/models/enums/EventoType';
+import { EventoTypeEnum } from 'src/models/enums/EventoTypeEnum';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -20,17 +20,17 @@ export class EventoService {
         const eventoRetiro = new Evento(
             alquiler.fechaRetiro, 
             alquiler.fechaRetiro, 
-            EventoType.Retiro + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
+            EventoTypeEnum.Retiro + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
             "#00ff00", 
-            EventoType.Retiro,
+            EventoTypeEnum.Retiro,
             alquiler)
 
         const eventoDevolucion = new Evento(
             alquiler.fechaDevolucion, 
             alquiler.fechaDevolucion, 
-            EventoType.Devolucion + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
+            EventoTypeEnum.Devolucion + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
             "#ff0000", 
-            EventoType.Devolucion,
+            EventoTypeEnum.Devolucion,
             alquiler)
         
         return [this.eventoRepository.save(eventoRetiro),this.eventoRepository.save(eventoDevolucion)]

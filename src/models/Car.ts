@@ -1,5 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Alquiler } from "./Alquiler";
+import { combustibleEnum } from "./enums/CombustibleEnum";
+import { TransmisionEnum } from "./enums/TransmisionEnum";
 
 @Entity()
 export class Car {
@@ -29,10 +31,10 @@ export class Car {
     image: string;
 
     @Column()
-    transmision: string;
+    transmision: TransmisionEnum;
 
     @Column()
-    combustible: string;
+    combustible: combustibleEnum;
 
     @Column()
     ac: boolean;
@@ -45,5 +47,21 @@ export class Car {
 
     @OneToMany(() => Alquiler, (alquiler) => alquiler.car)
     alquiler: Alquiler[];
+
+    constructor(name: string, brand: string, year: number, km: number, color: string, price: number, image: string, transmision: TransmisionEnum, combustible: combustibleEnum, ac: boolean, capacidad: number, patente: string){
+        this.name = name;
+        this.brand = brand;
+        this.year = year;
+        this.km = km;
+        this.color = color;
+        this.price = price;
+        this.image = image;
+        this.transmision = transmision;
+        this.combustible = combustible;
+        this.ac = ac;
+        this.capacidad = capacidad;
+        this.patente = patente;
+        
+    }
 
 }

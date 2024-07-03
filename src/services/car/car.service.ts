@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from '../../models/Car';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
+import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
 
 @Injectable()
 export class CarService {
@@ -10,9 +11,11 @@ export class CarService {
         @InjectRepository(Car) private readonly carRepository: Repository<Car>
     ) { }
 
-    async getAllCar(): Promise<Car[]> {
-        console.log("getAllCar")
-        return await this.carRepository.find();
+    async getAllCar(filtros:FiltrosDTO): Promise<Car[]> {
+        // console.log("getAllCar")
+        // console.log("filtros: ", filtros)
+ 
+        return await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: filtros.capacidad });
 
     }
 

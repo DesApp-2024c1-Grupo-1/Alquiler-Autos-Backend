@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Alquiler } from 'src/models/Alquiler';
+import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
 import { AlquilerService } from 'src/services/alquiler/alquiler.service';
 
 @Controller('alquiler')
@@ -9,8 +10,8 @@ export class AlquilerController {
         private readonly alquilerService: AlquilerService){}
 
     @Post()
-    postAlquiler(@Body() alquiler: Alquiler): Promise<Alquiler>{
-        return this.alquilerService.postAlquiler(alquiler);
+    postAlquiler(@Body() alquilerDTO: AlquilerDTO): Promise<Alquiler>{
+        return this.alquilerService.postAlquiler(alquilerDTO);
     }
 
     @Get(':id')
