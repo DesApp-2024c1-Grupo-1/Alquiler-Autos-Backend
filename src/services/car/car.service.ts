@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from '../../models/Car';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MoreThanOrEqual } from 'typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
+import { createQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class CarService {
@@ -12,10 +14,11 @@ export class CarService {
     ) { }
 
     async getAllCar(filtros:FiltrosDTO): Promise<Car[]> {
-        // console.log("getAllCar")
-        // console.log("filtros: ", filtros)
+
+        filtros.capacidad = filtros.capacidad ? filtros.capacidad : 0;
  
-        return await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: filtros.capacidad });
+        return await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: MoreThanOrEqual(filtros.capacidad)
+        });
 
     }
 
@@ -32,3 +35,4 @@ export class CarService {
     }
 
 }
+
