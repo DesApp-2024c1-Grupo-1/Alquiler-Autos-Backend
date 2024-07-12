@@ -11,6 +11,7 @@ export class AlquilerController {
 
     @Post()
     postAlquiler(@Body() alquilerDTO: AlquilerDTO): Promise<Alquiler>{
+        console.log("Controller postAlquiler",alquilerDTO)
         return this.alquilerService.postAlquiler(alquilerDTO);
     }
 

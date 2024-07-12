@@ -19,7 +19,6 @@ export class AlquilerDTO {
 
     @IsInt()
     @Min(1)
-    @Max(2)
     cantidadDias?: number;
 
     car?: Car;

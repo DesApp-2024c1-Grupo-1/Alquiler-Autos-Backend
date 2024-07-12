@@ -16,7 +16,7 @@ export class EventoService {
         return this.eventoRepository.find();
     }
 
-    createEventosFromAlquiler(alquiler : Alquiler): Promise<Evento>[] {
+    async createEventosFromAlquiler(alquiler : Alquiler): Promise<Evento[]> {
         const eventoRetiro = new Evento(
             alquiler.fechaRetiro, 
             alquiler.fechaRetiro, 
@@ -32,7 +32,9 @@ export class EventoService {
             "#ff0000", 
             EventoTypeEnum.Devolucion,
             alquiler)
+
+        const eventos =  [await this.eventoRepository.save(eventoRetiro), await this.eventoRepository.save(eventoDevolucion)];
         
-        return [this.eventoRepository.save(eventoRetiro),this.eventoRepository.save(eventoDevolucion)]
+        return eventos
     }
 }
