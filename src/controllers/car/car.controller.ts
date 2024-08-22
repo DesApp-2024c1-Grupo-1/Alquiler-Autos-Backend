@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseBoolPipe, ParseIntPipe, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Car } from '../../models/Car';
 import { CarService } from '../../services/car/car.service';
 import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
@@ -13,6 +13,11 @@ export class CarController {
   @Get("/car")
   getAllCars(@Query() filtros:FiltrosDTO) : Promise<Car[]> {
     return this.carService.getAllCar(filtros);
+  }
+
+  @Post("/car/available")
+  getAllCarsAvailable(@Body() filtros:FiltrosDTO) : Promise<Car[]> {
+    return this.carService.getAllCarAvailable(filtros);
   }
 
   @Get("/car/:id")

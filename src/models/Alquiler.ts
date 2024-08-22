@@ -8,13 +8,13 @@ export class Alquiler {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column()
+    @Column({type: 'timestamp', nullable: true})
     fechaRetiro: Date;
 
     @Column()
     lugarRetiro: string;
 
-    @Column()
+    @Column({type: 'timestamp', nullable: true})
     fechaDevolucion: Date;
 
     @Column()

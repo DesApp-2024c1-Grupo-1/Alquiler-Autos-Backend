@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Alquiler } from 'src/models/Alquiler';
-import { Cliente } from 'src/models/Cliente';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { ClienteService } from '../cliente/cliente.service';
 import { EventoService } from '../evento/evento.service';
 import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
@@ -50,4 +49,30 @@ export class AlquilerService {
     async getAllAlquileres(): Promise<Alquiler[]> {
         return this.alquilerRepository.find({ relations: ['cliente', 'car'] });
     }
+
+    async getAllAlquileresBetween(fechaRetiro,fechaDevolucion): Promise<Alquiler[]> {
+        console.log("Buscando alquileres del ", fechaRetiro, " al ", fechaDevolucion)
+        
+        return this.alquilerRepository.find({
+            where: [
+              {
+                fechaRetiro: Between(fechaRetiro, fechaDevolucion),
+              },
+              {
+                fechaDevolucion: Between(fechaRetiro, fechaDevolucion),
+              },
+              {
+                fechaRetiro: LessThanOrEqual(fechaRetiro),
+                fechaDevolucion: MoreThanOrEqual(fechaRetiro),
+              },
+              {
+                fechaRetiro: LessThanOrEqual(fechaDevolucion),
+                fechaDevolucion: MoreThanOrEqual(fechaDevolucion),
+              },
+            ],
+            relations: ['cliente', 'car'] 
+            }
+        );
+    }
+    
 }

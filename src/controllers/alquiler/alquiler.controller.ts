@@ -15,6 +15,11 @@ export class AlquilerController {
         return this.alquilerService.postAlquiler(alquilerDTO);
     }
 
+    @Post('/between')
+    getAllAlquileresBetween(@Body() fechas:any): Promise<Alquiler[]>{
+        return this.alquilerService.getAllAlquileresBetween(fechas.fechaRetiro,fechas.fechaDevolucion);
+    }
+
     @Get(':id')
     getAlquilerById(@Param('id') id: number): Promise<Alquiler>{
         return this.alquilerService.getAlquilerById(id);
