@@ -45,6 +45,9 @@ export class Car {
     @Column()
     patente: string;
 
+    @Column({type: 'timestamp', nullable: true})
+    fechaLanzamiento: Date;
+
     @OneToMany(() => Alquiler, (alquiler) => alquiler.car)
     alquiler: Alquiler[];
 
@@ -61,6 +64,7 @@ export class Car {
         this.ac = ac;
         this.capacidad = capacidad;
         this.patente = patente;
+        this.fechaLanzamiento = this.fechaLanzamiento;
         
     }
 
