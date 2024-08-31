@@ -6,6 +6,7 @@ import { ClienteDTO } from './DTO/ClienteDTO';
 
 @Entity()
 export class Cliente {
+
     @PrimaryGeneratedColumn('increment')
     id: number;
 
@@ -24,9 +25,14 @@ export class Cliente {
     @OneToMany(() => Alquiler, (alquiler) => alquiler.cliente)
     alquiler: Alquiler[];
 
-    // public toEntity(): Cliente {
-    //     console.log("Le estas pifiando")
-    //     return new Cliente();
-    // }
+    static toEntity(cliente: ClienteDTO): Cliente {
+        const entity = new Cliente();
+        entity.id = cliente.id;
+        entity.nombre = cliente.nombre;
+        entity.documento = cliente.documento;
+        entity.telefono = cliente.telefono;
+        entity.email = cliente.email;
+        return entity;
+    }
 
 }

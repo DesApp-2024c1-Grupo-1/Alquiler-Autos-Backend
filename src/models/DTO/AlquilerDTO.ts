@@ -1,7 +1,8 @@
 import { IsInt, Max, Min, ValidateNested } from "class-validator";
 import { Car } from "../Car";
 import { ClienteDTO } from "./ClienteDTO";
-import { Type } from "class-transformer";
+import { Transform, TransformFnParams, Type } from "class-transformer";
+import { Alquiler } from "../Alquiler";
 
 export class AlquilerDTO {
 
@@ -23,9 +24,24 @@ export class AlquilerDTO {
 
     car?: Car;
 
-    @Type(() => ClienteDTO)
+    @Transform(({ value }: TransformFnParams) => ClienteDTO.toDTO(value))
     @ValidateNested()
     cliente?: ClienteDTO;
+
+    static toDTO(alquilerEntity: Alquiler): any {
+        const dto = new AlquilerDTO();
+        dto.id = alquilerEntity.id;
+        dto.fechaRetiro = alquilerEntity.fechaRetiro;
+        dto.lugarRetiro = alquilerEntity.lugarRetiro;
+        dto.fechaDevolucion = alquilerEntity.fechaDevolucion;
+        dto.lugarDevolucion = alquilerEntity.lugarDevolucion;
+        dto.precioFinal = alquilerEntity.precioFinal;
+        dto.cantidadDias = alquilerEntity.cantidadDias;
+        dto.car = alquilerEntity.car;
+        dto.cliente = alquilerEntity.cliente;
+        return dto;
+    }
+
 
 }
 

@@ -1,10 +1,12 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
 import { Car } from "./Car";
 import { Cliente } from "./Cliente";
-import { ClienteDTO } from "./DTO/ClienteDTO";
+import { Evento } from "./Evento";
+import { AlquilerDTO } from "./DTO/AlquilerDTO";
 
 @Entity()
 export class Alquiler {
+
     @PrimaryGeneratedColumn('increment')
     id: number;
 
@@ -32,14 +34,22 @@ export class Alquiler {
     @ManyToOne(() => Cliente, cliente => cliente.alquiler,{cascade: true})
     cliente: Cliente;
 
-    // constructor(fechaRetiro: Date, lugarRetiro: string, fechaDevolucion: Date, lugarDevolucion: string, precioFinal: number, cantidadDias: number, car: Car, cliente: Cliente){
-    //     this.fechaRetiro = fechaRetiro;
-    //     this.lugarRetiro = lugarRetiro;
-    //     this.fechaDevolucion = fechaDevolucion;
-    //     this.lugarDevolucion = lugarDevolucion;
-    //     this.precioFinal = precioFinal;
-    //     this.cantidadDias = cantidadDias;
-    //     this.car = car;
-    //     this.cliente = cliente;
-    // }
+    @OneToMany(() => Evento, (evento) => evento.alquiler,{cascade: true})
+    eventos: Evento[];
+
+    static toEntity(alquilerDTO: AlquilerDTO): Alquiler {
+        const entity = new Alquiler();
+        entity.id = alquilerDTO.id;
+        entity.fechaRetiro = alquilerDTO.fechaRetiro;
+        entity.lugarRetiro = alquilerDTO.lugarRetiro;
+        entity.fechaDevolucion = alquilerDTO.fechaDevolucion;
+        entity.lugarDevolucion = alquilerDTO.lugarDevolucion;
+        entity.precioFinal = alquilerDTO.precioFinal;
+        entity.cantidadDias = alquilerDTO.cantidadDias;
+        entity.car = alquilerDTO.car;
+        entity.cliente = Cliente.toEntity(alquilerDTO.cliente);
+        // entity.eventos = alquilerDTO.eventos; //TODO: Fix this
+        return entity;
+    }
+
 }

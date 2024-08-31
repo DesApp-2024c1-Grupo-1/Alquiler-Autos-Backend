@@ -22,8 +22,17 @@ export class ClienteDTO {
 
     @Transform(({ value }) => value === undefined ? undefined : value === '' ? undefined : value)
     @IsOptional()
-    @IsEmail({}, {message: 'El email debe ser un email valido'})
     email: string;
+
+    static toDTO(cliente: Cliente): any {
+        const dto = new ClienteDTO();
+        dto.id = cliente.id;
+        dto.nombre = cliente.nombre;
+        dto.documento = cliente.documento;
+        dto.telefono = cliente.telefono;
+        dto.email = cliente.email;
+        return dto;
+    }
 
     
 }

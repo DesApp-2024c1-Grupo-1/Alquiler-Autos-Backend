@@ -1,16 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EventoTypeEnum } from "./enums/EventoTypeEnum";
+import { Alquiler } from "./Alquiler";
+import { EventoDTO } from "./DTO/EventoDTO";
 
 @Entity()
 export class Evento {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column()
-    start: Date;
-
-    @Column()
-    end: Date;
+    @Column({type: 'timestamp', nullable: true})
+    fecha: Date;
 
     @Column()
     text: string;
@@ -21,15 +20,25 @@ export class Evento {
     @Column()
     type: EventoTypeEnum;
 
-    @Column({type: 'json', nullable: true})
-    data?: Object;
+    @Column()
+    entidadId: number;
 
-    constructor(start: Date, end: Date, text: string, color: string, type: EventoTypeEnum, data?: Object) {
-        this.start = start;
-        this.end = end;
-        this.text = text;
-        this.color = color;
-        this.type = type;
-        this.data = data;
+    @ManyToOne(() => Alquiler, (alquiler) => alquiler.eventos)
+    @JoinColumn({ name: "entidadId" })
+    alquiler: Alquiler;
+
+    constructor() {}
+
+    static toEntity(evento:EventoDTO): Evento{
+        const eventoEntity = new Evento();
+        eventoEntity.id = evento.id;
+        eventoEntity.fecha = evento.start || evento.end;
+        eventoEntity.text = evento.text;
+        eventoEntity.color = evento.color;
+        eventoEntity.type = evento.type;
+        eventoEntity.entidadId = evento.entidadId;
+        eventoEntity.alquiler = Alquiler.toEntity(evento.alquiler);
+        return eventoEntity;
     }
+
 }

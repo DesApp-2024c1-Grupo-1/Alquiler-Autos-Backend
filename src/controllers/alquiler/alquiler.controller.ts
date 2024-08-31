@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { Alquiler } from 'src/models/Alquiler';
 import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
 import { AlquilerService } from 'src/services/alquiler/alquiler.service';
@@ -10,7 +10,7 @@ export class AlquilerController {
         private readonly alquilerService: AlquilerService){}
 
     @Post()
-    postAlquiler(@Body() alquilerDTO: AlquilerDTO): Promise<Alquiler>{
+    postAlquiler(@Body() alquilerDTO: AlquilerDTO): Promise<AlquilerDTO>{
         console.log("Controller postAlquiler",alquilerDTO)
         return this.alquilerService.postAlquiler(alquilerDTO);
     }
@@ -29,4 +29,10 @@ export class AlquilerController {
     getAllAlquileres(): Promise<Alquiler[]>{
         return this.alquilerService.getAllAlquileres();
     }
+
+    // @Put(':id')
+    // putAlquilerByEventoId(@Body() alquilerDTO: AlquilerDTO, @Param('id') alquilerId: number): Promise<Alquiler>{
+    //     console.log("------------[putAlquilerByEventoId]------------")
+    //     return this.alquilerService.putAlquilerById(alquilerDTO,alquilerId);
+    // }
 }
