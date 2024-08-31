@@ -7,11 +7,13 @@ import { EventoService } from '../evento/evento.service';
 import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
 import { ClienteDTO } from 'src/models/DTO/ClienteDTO';
 import { Evento } from 'src/models/Evento';
+import { EventoTypeEnum } from 'src/models/enums/EventoTypeEnum';
+import { Cliente } from 'src/models/Cliente';
 
 
 @Injectable()
 export class AlquilerService {
-  
+
   constructor(
     @InjectRepository(Alquiler) private readonly alquilerRepository: Repository<Alquiler>,
     private readonly clienteService: ClienteService,
@@ -34,7 +36,7 @@ export class AlquilerService {
       console.log("Cliente nuevo", alquilerDTO.cliente)
     }
 
-    const alquilerCreado:Alquiler = this.alquilerRepository.create(alquilerDTO);
+    const alquilerCreado: Alquiler = this.alquilerRepository.create(alquilerDTO);
     const eventos: Evento[] = await this.eventoService.createEventosFromAlquiler(alquilerCreado);
 
     console.log("Eventos creados", eventos)
@@ -52,7 +54,7 @@ export class AlquilerService {
 
   async getAlquilerById(id: number): Promise<Alquiler> {
     console.log(`------------[getAlquilerById ${id}]------------`)
-    return this.alquilerRepository.findOne({ relations: ['cliente', 'car'], where: { id } });
+    return this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car'], where: { id } });
   }
 
   async getAllAlquileres(): Promise<Alquiler[]> {
@@ -84,56 +86,70 @@ export class AlquilerService {
     );
   }
 
-  // async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: number): Promise<Alquiler> {
-  //   console.log("------------[alquilerService.putAlquilerByEventoId]------------")
+  async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: number): Promise<AlquilerDTO> {
+    try {
+      const alquilerExistente: Alquiler = await this.getAlquilerById(alquilerId);
+      console.log(`------------[Alquiler con id ${alquilerId} encontrado:]------------`)
+      console.log(alquilerExistente)
 
-  //   console.log(`------------[Buscando Alquiler con id ${alquilerId}]------------`)
-  //   const alquilerExistente: Alquiler = await this.getAlquilerById(alquilerId);
+      const clienteExistente: Cliente = await this.clienteService.getClienteById(alquilerDTO.cliente.id)
+      console.log(`------------[Cliente encontrado:]------------`)
+      console.log(clienteExistente)
 
-  //   if (!alquilerExistente) {
-  //     throw new BadRequestException("No existe un alquiler con el id " + alquilerExistente.id)
-  //   }
+      //Busca los eventos antes de modificar el alquiler
+      const eventosDelAlquiler = await this.eventoService.findEventosbyAlquiler(alquilerExistente);
+      console.log(`------------[Eventos del alquiler encontrados:]------------`)
+      console.log(eventosDelAlquiler)
 
-  //   console.log(`------------[Alquiler con id ${alquilerId} encontrado: ${alquilerExistente.car.name} ]------------`)
 
-  //   //Busca los eventos antes de modificar el alquiler
+      //Modifica el cliente del alquiler
+      clienteExistente.nombre = alquilerDTO.cliente.nombre;
+      clienteExistente.documento = alquilerDTO.cliente.documento;
+      clienteExistente.telefono = alquilerDTO.cliente.telefono;
+      clienteExistente.email = alquilerDTO.cliente.email;
+
+      //Modifica los datos del alquiler
+      alquilerExistente.fechaRetiro = alquilerDTO.fechaRetiro;
+      alquilerExistente.fechaDevolucion = alquilerDTO.fechaDevolucion;
+      alquilerExistente.lugarDevolucion = alquilerDTO.lugarDevolucion;
+      alquilerExistente.lugarRetiro = alquilerDTO.lugarRetiro;
+      alquilerExistente.cantidadDias = alquilerDTO.cantidadDias;
+      alquilerExistente.precioFinal = alquilerDTO.precioFinal;
+      alquilerExistente.cliente = clienteExistente;
+      console.log(`------------[Modificado el alquiler existente:]------------`)
+      console.log(alquilerExistente)
+
+      //Modifica los eventos del alquiler con los datos actualizados
+      const eventosModificados = []
+
+      eventosDelAlquiler.forEach(evento => {
+        if (evento.type == EventoTypeEnum.Retiro_Alquiler) {
+          evento.fecha = alquilerExistente.fechaRetiro;
+        } else if (evento.type === EventoTypeEnum.Devolucion_Alquiler) {
+          evento.fecha = alquilerExistente.fechaDevolucion;
+        }
+        evento.alquiler = alquilerExistente;
+        evento.entidadId = alquilerExistente.id;
+        eventosModificados.push(evento);
+      })
+
+      console.log(`------------[Eventos de alquiler modificados:]------------`)
+      console.log(eventosModificados)
+
+      alquilerExistente.eventos = eventosModificados;
+
+      console.log(`------------[Entidad a guardar:]------------`)
+      console.log(alquilerExistente)
+
+      const saved = await this.alquilerRepository.save(alquilerExistente);
+      console.log(`------------[Guardando el alquiler, cliente y eventos modificados:]------------`)
+      return AlquilerDTO.toDTO(saved);
+
+    } catch (e) {
+      console.log(`------------[Error al modificar el alquiler con id ${alquilerId}]------------`)
+      console.error(e)
+    }
     
-  //   const eventosDelAlquiler = await this.eventoService.findEventosbyAlquiler(alquilerExistente); 
-  //   console.log(`------------[Eventos del alquiler encontrados:]------------`)
-  //   console.log(eventosDelAlquiler)
- 
-    
-  //   //Modifica los datos del alquiler
-    
-  //   alquilerExistente.fechaRetiro = alquilerDTO.fechaRetiro;
-  //   alquilerExistente.fechaDevolucion = alquilerDTO.fechaDevolucion;
-  //   alquilerExistente.lugarDevolucion = alquilerDTO.lugarDevolucion;
-  //   alquilerExistente.lugarRetiro = alquilerDTO.lugarRetiro;
-  //   alquilerExistente.cantidadDias = alquilerDTO.cantidadDias;
-  //   alquilerExistente.precioFinal = alquilerDTO.precioFinal;
-  //   console.log(`------------[Modificado el alquiler existente: ${alquilerExistente}]------------`)
-
-  //   //Modifica los eventos del alquiler con los datos actualizados
-
-  //   const eventosModificados = []
-
-  //   eventosDelAlquiler.forEach(evento => {
-  //     if (evento.type === "Retiro") {
-  //       evento.start = alquilerExistente.fechaRetiro;
-  //       evento.end = alquilerExistente.fechaRetiro;
-  //     } else if (evento.type === "Devolucion") {
-  //       evento.start = alquilerExistente.fechaDevolucion;
-  //       evento.end = alquilerExistente.fechaDevolucion;
-  //     }
-  //     evento.data = alquilerExistente;
-  //     eventosModificados.push(evento);
-  //   })
-    
-  //   console.log(`------------[Guardando los eventos de alquiler modificados:]------------`)
-  //   console.log(eventosModificados)
-  //   this.eventoService.saveEventos(eventosModificados);
-
-  //   return this.alquilerRepository.save(alquilerExistente);
-  // }
+  }
 
 }

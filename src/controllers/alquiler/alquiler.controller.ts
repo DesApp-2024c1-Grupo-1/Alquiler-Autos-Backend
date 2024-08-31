@@ -30,9 +30,9 @@ export class AlquilerController {
         return this.alquilerService.getAllAlquileres();
     }
 
-    // @Put(':id')
-    // putAlquilerByEventoId(@Body() alquilerDTO: AlquilerDTO, @Param('id') alquilerId: number): Promise<Alquiler>{
-    //     console.log("------------[putAlquilerByEventoId]------------")
-    //     return this.alquilerService.putAlquilerById(alquilerDTO,alquilerId);
-    // }
+    @Put(':id')
+    putAlquilerByEventoId(@Body() alquilerDTO: AlquilerDTO, @Param('id') alquilerId: number): Promise<AlquilerDTO>{
+        return this.alquilerService.putAlquilerById(alquilerDTO,alquilerId);
+    }
+
 }

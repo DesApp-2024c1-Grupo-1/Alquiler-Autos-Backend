@@ -16,10 +16,6 @@ export class EventoController {
     async getEventoById(@Param('id') id:number): Promise<EventoDTO> {
         return await this.eventoService.getEventobyId(id)
     }
-    // @Put(':id')
-    // putEventoById(@Param() id:number, @Body() evento:Evento): Promise<Evento> {
-    //     return this.eventoService.putEventoById(id,evento);
-    // }
     
 }
 
