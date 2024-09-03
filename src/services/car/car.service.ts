@@ -6,6 +6,7 @@ import { Repository } from 'typeorm/repository/Repository';
 import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
 import { AlquilerService } from '../alquiler/alquiler.service';
 import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
+import { CarDTO } from 'src/models/DTO/CarDTO';
 
 @Injectable()
 export class CarService {
@@ -57,6 +58,15 @@ export class CarService {
         }
 
         return car;
+    }
+
+    async postCar(carDTO: CarDTO): Promise<Car> {
+        // ver si hay que poner validaciones
+        console.log("Service postCar")
+        const carPersistido = await this.carRepository.save(carDTO);
+        console.log("Car persistido", carPersistido)
+
+        return carPersistido;
     }
 
 }
