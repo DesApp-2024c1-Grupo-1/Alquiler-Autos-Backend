@@ -2,6 +2,8 @@ import { IsInt, Max, Min, ValidateNested } from "class-validator";
 import { Car } from "../Car";
 import { ClienteDTO } from "./ClienteDTO";
 import { Type } from "class-transformer";
+import { TransmisionEnum } from "../enums/TransmisionEnum";
+import { combustibleEnum } from "../enums/CombustibleEnum";
 
 export class CarDTO {
 
