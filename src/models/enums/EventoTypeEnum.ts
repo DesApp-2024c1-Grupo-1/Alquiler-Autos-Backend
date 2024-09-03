@@ -1,4 +1,4 @@
 export enum EventoTypeEnum {
-    Retiro = 'Retiro',
-    Devolucion = 'Devolucion',
+    Retiro_Alquiler = 'Retiro Alquiler',
+    Devolucion_Alquiler = 'Devolucion Alquiler',
 }

@@ -11,12 +11,13 @@ export class ClienteService {
     ){}
 
     async getClienteById(id: number): Promise<Cliente>{
-        const cliente: Cliente = await this.clienteRepository.findOneBy({id});
-        if(!cliente){
-            throw new NotFoundException(`Cliente con id ${id} no encontrado`);
+        try {
+            return await this.clienteRepository.findOneOrFail({where: {id}});
+        } catch (error) {
+            console.log("----------------[Error getClienteById]----------------")
+            console.error(error)
         }
-
-        return cliente;
+      
     }
 
     //Actualmente sin uso
@@ -40,13 +41,7 @@ export class ClienteService {
 
     async getClientByDocument(documento: string): Promise<Cliente>{
         
-        const clienteExistente : Cliente = await this.clienteRepository.findOneBy({documento});
-
-        // if(!clienteExistente){
-        //     throw new NotFoundException(`Cliente con documento ${documento} no encontrado`);
-        // }
-
-        return clienteExistente;
+        return  await this.clienteRepository.findOneBy({documento});;
 
     }
 
