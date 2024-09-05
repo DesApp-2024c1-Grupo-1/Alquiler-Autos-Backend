@@ -13,6 +13,7 @@ export class CarController {
 
   @Get("/car")
   getAllCars(@Query() filtros:FiltrosDTO) : Promise<Car[]> {
+    console.log("---------------[Get All Cars]-----------------")
     return this.carService.getAllCar(filtros);
   }
 

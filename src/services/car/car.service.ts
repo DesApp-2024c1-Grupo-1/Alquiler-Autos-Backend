@@ -17,6 +17,7 @@ export class CarService {
     ) { }
 
     async getAllCarAvailable(filtros:FiltrosDTO): Promise<Car[]> {
+        console.log("----------------[Get All Cars Available]-----------------")
 
         if(!filtros.fechaRetiro || !filtros.fechaDevolucion) {
             return this.getAllCar(filtros);
@@ -40,6 +41,8 @@ export class CarService {
     }
 
     async getAllCar(filtros:FiltrosDTO): Promise<Car[]> {
+
+        console.log("---------------[Get All Cars Sin fechas]-----------------")
 
         filtros.capacidad = filtros.capacidad ? filtros.capacidad : 0;
  
