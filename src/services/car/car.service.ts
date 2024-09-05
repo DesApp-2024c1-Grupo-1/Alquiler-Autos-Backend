@@ -10,7 +10,7 @@ import { CarDTO } from 'src/models/DTO/CarDTO';
 
 @Injectable()
 export class CarService {
-
+ 
     constructor(
         @InjectRepository(Car) private readonly carRepository: Repository<Car>,
         private readonly alquilerService: AlquilerService
@@ -63,10 +63,27 @@ export class CarService {
     async postCar(carDTO: CarDTO): Promise<Car> {
         // ver si hay que poner validaciones
         console.log("Service postCar")
+        carDTO.fechaLanzamiento = new Date();
         const carPersistido = await this.carRepository.save(carDTO);
         console.log("Car persistido", carPersistido)
 
         return carPersistido;
+    }
+
+    async putCar(id: number, carDTO: CarDTO): Promise<CarDTO> {
+        console.log("Service putCar", id)
+        const car: Car = await this.getCarById(id);
+        const carActualizado: CarDTO = await this.carRepository.save({...car, ...carDTO});
+        return carActualizado;
+    }
+
+    async deleteCar(id: number): Promise<CarDTO> {
+        console.log("Service deleteCar", id)
+        let car: Car = await this.getCarById(id);
+        console.log("Car", car)
+        const response = await this.carRepository.softRemove(car);
+        console.log("Response", response)
+        return car;
     }
 
 }

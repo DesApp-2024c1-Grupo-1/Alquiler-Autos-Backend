@@ -33,8 +33,7 @@ export class CarDTO {
     
     patente?: string;
 
-    lugarDevolucion?: string;
+    fechaLanzamiento: Date;
 
-    precioFinal?: number;
 }
 

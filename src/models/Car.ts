@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, DeleteDateColumn } from "typeorm";
 import { Alquiler } from "./Alquiler";
 import { combustibleEnum } from "./enums/CombustibleEnum";
 import { TransmisionEnum } from "./enums/TransmisionEnum";
+import { Delete } from "@nestjs/common";
 
 @Entity()
 export class Car {
@@ -50,6 +51,9 @@ export class Car {
 
     @OneToMany(() => Alquiler, (alquiler) => alquiler.car)
     alquiler: Alquiler[];
+
+    @DeleteDateColumn()
+    deletedAt: Date; 
 
     constructor(name: string, brand: string, year: number, km: number, color: string, price: number, image: string, transmision: TransmisionEnum, combustible: combustibleEnum, ac: boolean, capacidad: number, patente: string){
         this.name = name;
