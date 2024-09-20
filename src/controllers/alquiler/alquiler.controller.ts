@@ -21,12 +21,12 @@ export class AlquilerController {
     }
 
     @Get(':id')
-    getAlquilerById(@Param('id') id: number): Promise<Alquiler>{
-        return this.alquilerService.getAlquilerById(id);
+    getAlquilerById(@Param('id') id: number): Promise<AlquilerDTO>{
+        return this.alquilerService.getAlquilerDTOById(id);
     }
 
     @Get()
-    getAllAlquileres(): Promise<Alquiler[]>{
+    getAllAlquileres(): Promise<AlquilerDTO[]>{
         return this.alquilerService.getAllAlquileres();
     }
 

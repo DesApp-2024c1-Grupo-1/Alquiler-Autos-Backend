@@ -3,6 +3,7 @@ import { Car } from "./Car";
 import { Cliente } from "./Cliente";
 import { Evento } from "./Evento";
 import { AlquilerDTO } from "./DTO/AlquilerDTO";
+import { Pago } from "./Pago";
 
 @Entity()
 export class Alquiler {
@@ -36,6 +37,9 @@ export class Alquiler {
 
     @OneToMany(() => Evento, (evento) => evento.alquiler,{cascade: true})
     eventos: Evento[];
+
+    @OneToMany(() => Pago, (pago) => pago.alquiler,{cascade: true})
+    pagos: Pago[];
 
     static toEntity(alquilerDTO: AlquilerDTO): Alquiler {
         const entity = new Alquiler();

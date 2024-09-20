@@ -3,6 +3,7 @@ import { Car } from "../Car";
 import { ClienteDTO } from "./ClienteDTO";
 import { Transform, TransformFnParams, Type } from "class-transformer";
 import { Alquiler } from "../Alquiler";
+import { Pago } from "../Pago";
 
 export class AlquilerDTO {
 
@@ -18,6 +19,8 @@ export class AlquilerDTO {
 
     precioFinal?: number;
 
+    saldoPendiente?: number;
+
     @IsInt()
     @Min(1)
     cantidadDias?: number;
@@ -28,7 +31,14 @@ export class AlquilerDTO {
     @ValidateNested()
     cliente?: ClienteDTO;
 
+    pagos? : Pago[];
+
     static toDTO(alquilerEntity: Alquiler): any {
+
+        if(!alquilerEntity.pagos){
+            alquilerEntity.pagos = []
+        }
+
         const dto = new AlquilerDTO();
         dto.id = alquilerEntity.id;
         dto.fechaRetiro = alquilerEntity.fechaRetiro;
@@ -39,6 +49,13 @@ export class AlquilerDTO {
         dto.cantidadDias = alquilerEntity.cantidadDias;
         dto.car = alquilerEntity.car;
         dto.cliente = alquilerEntity.cliente;
+        console.log("Casi explota")
+        dto.pagos = alquilerEntity.pagos;
+        console.log("Casi casi")
+        console.log(alquilerEntity)
+        console.log("Pagos",alquilerEntity.pagos)
+        dto.saldoPendiente = alquilerEntity.precioFinal - alquilerEntity.pagos.reduce((acc, pago) => acc + pago.monto, 0) //Calculo del saldo pendiente
+        console.log("Kaboom")
         return dto;
     }
 

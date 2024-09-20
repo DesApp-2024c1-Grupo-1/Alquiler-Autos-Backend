@@ -16,7 +16,7 @@ export class EventoService {
 
     async getAllEventos(): Promise<EventoDTO[]> {
         console.log("----------------[getAllEventos]----------------")
-        const listaEventos: any[] = await this.eventoRepository.find({ relations: ["alquiler", "alquiler.cliente","alquiler.car"] });
+        const listaEventos: any[] = await this.eventoRepository.find({ relations: ["alquiler", "alquiler.cliente","alquiler.car", "alquiler.pagos"] });
         const listaEventosDTO = listaEventos.map(evento => EventoDTO.toDTO(evento));
         console.log("Lista EventosDTO: ", listaEventosDTO)
         
@@ -46,7 +46,7 @@ export class EventoService {
     
 
     async getEventobyId(id: number): Promise<EventoDTO> {
-        const evento:Evento = await this.eventoRepository.findOne({ where: { id } , relations: ["alquiler","alquiler.cliente"]});
+        const evento:Evento = await this.eventoRepository.findOne({ where: { id } , relations: ["alquiler","alquiler.cliente", "alquiler.pagos"]});
         if(!evento)
             throw new BadRequestException(`Evento ${id} inexistente`);
 

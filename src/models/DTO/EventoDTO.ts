@@ -36,7 +36,7 @@ export class EventoDTO{
         eventoDTO.color = evento.color;
         eventoDTO.type = evento.type;
         eventoDTO.entidadId = evento.entidadId;
-        eventoDTO.alquiler = evento.alquiler;
+        eventoDTO.alquiler = AlquilerDTO.toDTO(evento.alquiler);
         console.log("----------------[Evento toDTO - Fin]----------------")
         return eventoDTO;
     }

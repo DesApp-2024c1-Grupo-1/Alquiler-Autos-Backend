@@ -52,13 +52,21 @@ export class AlquilerService {
     return alquilerResponseDTO;
   }
 
-  async getAlquilerById(id: number): Promise<Alquiler> {
-    console.log(`------------[getAlquilerById ${id}]------------`)
-    return this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car'], where: { id } });
+  async getAlquilerDTOById(id: number): Promise<AlquilerDTO> {
+    console.log(`------------[getAlquilerDTOById ${id}]------------`)
+    const entity = await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos'], where: { id } });
+    return AlquilerDTO.toDTO(entity);
   }
 
-  async getAllAlquileres(): Promise<Alquiler[]> {
-    return this.alquilerRepository.find({ relations: ['cliente', 'car'] });
+  async getAlquilerEntityById(id: number): Promise<Alquiler> {
+    console.log(`------------[getAlquilerEntityById ${id}]------------`)
+    return await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos'], where: { id } });
+  }
+
+  async getAllAlquileres(): Promise<AlquilerDTO[]> {
+    const list = await this.alquilerRepository.find({ relations: ['cliente', 'car','pagos'] })
+    return list.map(alquiler => AlquilerDTO.toDTO(alquiler))
+
   }
 
   async getAllAlquileresBetween(fechaRetiro, fechaDevolucion): Promise<Alquiler[]> {
@@ -88,7 +96,10 @@ export class AlquilerService {
 
   async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: number): Promise<AlquilerDTO> {
     try {
-      const alquilerExistente: Alquiler = await this.getAlquilerById(alquilerId);
+      const alquilerExistente: Alquiler = await this.getAlquilerEntityById(alquilerId);
+      if(!alquilerExistente){
+        throw new BadRequestException("Alquiler no encontrado")
+      }
       console.log(`------------[Alquiler con id ${alquilerId} encontrado:]------------`)
       console.log(alquilerExistente)
 
