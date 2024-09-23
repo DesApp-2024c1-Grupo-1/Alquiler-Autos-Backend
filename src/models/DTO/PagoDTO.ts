@@ -5,9 +5,6 @@ import { Transform } from "class-transformer";
 
 export class PagoDTO {
     
-    @Transform((value) => new Date())
-    fecha: Date;
-
     @IsNumber()
     monto: number;
 
