@@ -26,10 +26,10 @@ export class PagoService {
             throw new Error("Alquiler no encontrado")
         }
 
-        pago.fecha = new Date()
-
+        
         pago.alquiler = alquilerExistente
         const pagoCreado: Pago = this.pagoRepository.create(pago);
+        pagoCreado.fecha = new Date()
         const pagoEntidad = await this.pagoRepository.save(pagoCreado);
         console.log("--------------------[Pago guardado]----------------------")
         console.log(pagoEntidad)
