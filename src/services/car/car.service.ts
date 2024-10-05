@@ -63,6 +63,12 @@ export class CarService {
         return car;
     }
 
+    // async getPatente(patente: string): Promise<Car>{
+    //     console.log("getPatente, patente: ", patente)
+
+    //     const patente = await this.carRepository.findOneBy({patente})
+    // }
+
     async postCar(carDTO: CarDTO): Promise<Car> {
         // ver si hay que poner validaciones
         console.log("Service postCar")

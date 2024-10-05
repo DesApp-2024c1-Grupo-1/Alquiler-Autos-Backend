@@ -16,6 +16,10 @@ export class CarController {
     console.log("---------------[Get All Cars]-----------------")
     return this.carService.getAllCar(filtros);
   }
+  // @Get("/car/:patente")
+  // getPatente(@Param('patente') patente: string): Promise<Car> {
+  //   return this.carService.getPatente(patente);
+  // }
 
   @Post("/car")
   createCar(@Body() car: Car): Promise<CarDTO> {
@@ -47,4 +51,5 @@ export class CarController {
   getCarById(@Param('id') id: number): Promise<Car> {
     return this.carService.getCarById(id);
   }
+
 }
