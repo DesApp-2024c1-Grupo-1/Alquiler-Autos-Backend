@@ -33,7 +33,9 @@ export class CarDTO {
     
     patente?: string;
 
-    fechaLanzamiento: Date;
+    fechaLanzamiento?: Date;
+
+    reservado?: boolean;
 
 }
 

@@ -16,7 +16,7 @@ export class CarService {
         private readonly alquilerService: AlquilerService
     ) { }
 
-    async getAllCarAvailable(filtros:FiltrosDTO): Promise<Car[]> {
+    async getAllCarAvailable(filtros:FiltrosDTO): Promise<CarDTO[]> {
         console.log("----------------[Get All Cars Available]-----------------")
 
         if(!filtros.fechaRetiro || !filtros.fechaDevolucion) {
@@ -32,11 +32,11 @@ export class CarService {
         console.log("Autos no disponibles", idsAutosNoDisponibles)
 
         //Se obtienen los autos segun los filtros
-        let autosFiltrados = await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: MoreThanOrEqual(filtros.capacidad)})
+        let autosFiltrados: CarDTO[] = await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: MoreThanOrEqual(filtros.capacidad)})
 
-        //Se quitan los autos no disponibles de la lista de autos filtrados
-        autosFiltrados = autosFiltrados.filter(auto => !idsAutosNoDisponibles.has(auto.id));
- 
+        //Se marcan los autos no disponibles como reservados
+        autosFiltrados.forEach(auto => idsAutosNoDisponibles.has(auto.id) ? auto.reservado = true : auto.reservado = false);
+
         return autosFiltrados;
     }
 

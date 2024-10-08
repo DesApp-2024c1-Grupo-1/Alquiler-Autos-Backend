@@ -43,7 +43,7 @@ export class CarController {
 
   //Consultar que autos hay disponibles con todos los filtros incluyendo fechas, se usa POST para poder enviar un Body
   @Post("/car/available")
-  getAllCarsAvailable(@Body() filtros:FiltrosDTO) : Promise<Car[]> {
+  getAllCarsAvailable(@Body() filtros:FiltrosDTO) : Promise<CarDTO[]> {
     return this.carService.getAllCarAvailable(filtros);
   }
 
