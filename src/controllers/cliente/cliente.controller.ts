@@ -11,8 +11,8 @@ export class ClienteController {
         return this.clienteService.getClienteById(id);
     }
     
-    @Post()
-    postCliente(@Body() cliente:Cliente): Promise<Cliente>{
-        return this.clienteService.postCliente(cliente);
-    }
+    // @Post()
+    // postCliente(@Body() cliente:Cliente): Promise<Cliente>{
+    //     return this.clienteService.postCliente(cliente);
+    // }
 }

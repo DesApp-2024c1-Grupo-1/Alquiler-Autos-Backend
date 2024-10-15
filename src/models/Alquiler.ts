@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, DeleteDateColumn} from "typeorm";
 import { Car } from "./Car";
 import { Cliente } from "./Cliente";
 import { Evento } from "./Evento";
@@ -40,6 +40,9 @@ export class Alquiler {
 
     @OneToMany(() => Pago, (pago) => pago.alquiler,{cascade: true})
     pagos: Pago[];
+
+    @DeleteDateColumn()
+    deletedAt: Date; 
 
     static toEntity(alquilerDTO: AlquilerDTO): Alquiler {
         const entity = new Alquiler();

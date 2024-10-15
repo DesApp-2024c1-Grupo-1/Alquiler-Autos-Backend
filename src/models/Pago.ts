@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, DeleteDateColumn } from "typeorm";
 import { Alquiler } from "./Alquiler";
 
 @Entity()
@@ -15,5 +15,8 @@ export class Pago {
 
     @ManyToOne(() => Alquiler, alquiler => alquiler.pagos)
     @JoinColumn()
-    alquiler: Alquiler
+    alquiler: Alquiler;
+
+    @DeleteDateColumn()
+    deletedAt: Date; 
 }

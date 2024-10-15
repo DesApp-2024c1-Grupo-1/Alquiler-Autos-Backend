@@ -23,13 +23,14 @@ export class AlquilerService {
   async postAlquiler(alquilerDTO: AlquilerDTO): Promise<AlquilerDTO> {
 
     console.log("----------------[Service postAlquiler]--------------------")
-    const clienteExistente: ClienteDTO = await this.clienteService.getClientByDocument(alquilerDTO.cliente.documento);
+    const clienteExistente: ClienteDTO = await this.clienteService.getClientByDocumentConEliminados(alquilerDTO.cliente.documento);
 
     if (clienteExistente) {
       console.log("Cliente existente", clienteExistente)
       clienteExistente.nombre = alquilerDTO.cliente.nombre;
       clienteExistente.email = alquilerDTO.cliente.email;
       clienteExistente.telefono = alquilerDTO.cliente.telefono;
+      clienteExistente.deletedAt = null;
 
       alquilerDTO.cliente = clienteExistente;
     } else {
@@ -60,7 +61,7 @@ export class AlquilerService {
 
   async getAlquilerEntityById(id: number): Promise<Alquiler> {
     console.log(`------------[getAlquilerEntityById ${id}]------------`)
-    return await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos'], where: { id } });
+    return await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos', 'eventos'], where: { id } });
   }
 
   async getAllAlquileres(): Promise<AlquilerDTO[]> {
@@ -162,5 +163,14 @@ export class AlquilerService {
     }
     
   }
+
+  async deleteAlquiler(id: number): Promise<AlquilerDTO> {
+    console.log("Service deleteCar", id)
+    let alquiler: Alquiler = await this.getAlquilerEntityById(id);
+    console.log("Alquiler", alquiler)
+    const response = await this.alquilerRepository.softRemove(alquiler);
+    console.log("Response", response)
+    return alquiler;
+}
 
 }
