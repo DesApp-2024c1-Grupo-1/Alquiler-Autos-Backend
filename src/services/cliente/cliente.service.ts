@@ -21,29 +21,40 @@ export class ClienteService {
     }
 
     //Actualmente sin uso
-    async postCliente(cliente: Cliente): Promise<Cliente>{
+    // async postCliente(cliente: Cliente): Promise<Cliente>{
 
-        const clienteExistente: Cliente = await this.getClientByDocument(cliente.documento);
+    //     const clienteExistente: Cliente = await this.getClientByDocument(cliente.documento);
 
-        if(clienteExistente){
-            clienteExistente.nombre = cliente.nombre;
-            clienteExistente.telefono = cliente.telefono;
-            clienteExistente.email = cliente.email;
+    //     if(clienteExistente){
+    //         clienteExistente.nombre = cliente.nombre;
+    //         clienteExistente.telefono = cliente.telefono;
+    //         clienteExistente.email = cliente.email;
 
-            return await this.clienteRepository.save(clienteExistente);
-        }
+    //         return await this.clienteRepository.save(clienteExistente);
+    //     }
 
-        if(cliente.documento == null || cliente.documento == ''){
-            throw new BadRequestException('El documento es requerido');
-        }
-        return await this.clienteRepository.save(cliente);
-    }
+    //     if(cliente.documento == null || cliente.documento == ''){
+    //         throw new BadRequestException('El documento es requerido');
+    //     }
+    //     return await this.clienteRepository.save(cliente);
+    // }
 
     async getClientByDocument(documento: string): Promise<Cliente>{
         
         return  await this.clienteRepository.findOneBy({documento});;
 
     }
+
+    async getClientByDocumentConEliminados(documento: string): Promise<Cliente>{
+        
+        return  await this.clienteRepository
+        .createQueryBuilder('Cliente')
+        .withDeleted()
+        .where('cliente.documento = :documento', {documento})
+        .getOne();
+
+    }
+
 
 
 }

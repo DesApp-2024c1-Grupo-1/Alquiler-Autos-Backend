@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, DeleteDateColumn } from "typeorm";
 import { EventoTypeEnum } from "./enums/EventoTypeEnum";
 import { Alquiler } from "./Alquiler";
 import { EventoDTO } from "./DTO/EventoDTO";
@@ -26,6 +26,9 @@ export class Evento {
     @ManyToOne(() => Alquiler, (alquiler) => alquiler.eventos)
     @JoinColumn({ name: "entidadId" })
     alquiler: Alquiler;
+
+    @DeleteDateColumn()
+    deletedAt: Date; 
 
     constructor() {}
 

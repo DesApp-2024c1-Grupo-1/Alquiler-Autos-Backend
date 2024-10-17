@@ -1,5 +1,5 @@
 import { Entity } from 'typeorm';
-import { PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, OneToMany, DeleteDateColumn } from 'typeorm';
 import { Column } from 'typeorm';
 import { Alquiler } from './Alquiler';
 import { ClienteDTO } from './DTO/ClienteDTO';
@@ -24,6 +24,9 @@ export class Cliente {
 
     @OneToMany(() => Alquiler, (alquiler) => alquiler.cliente)
     alquiler: Alquiler[];
+
+    @DeleteDateColumn()
+    deletedAt: Date; 
 
     static toEntity(cliente: ClienteDTO): Cliente {
         const entity = new Cliente();

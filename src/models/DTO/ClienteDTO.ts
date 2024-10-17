@@ -24,6 +24,8 @@ export class ClienteDTO {
     @IsOptional()
     email: string;
 
+    deletedAt: Date; 
+
     static toDTO(cliente: Cliente): any {
         const dto = new ClienteDTO();
         dto.id = cliente.id;
