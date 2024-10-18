@@ -48,7 +48,7 @@ export class ClienteService {
     async getClientByDocumentConEliminados(documento: string): Promise<Cliente>{
         
         return  await this.clienteRepository
-        .createQueryBuilder('Cliente')
+        .createQueryBuilder('cliente')
         .withDeleted()
         .where('cliente.documento = :documento', {documento})
         .getOne();
