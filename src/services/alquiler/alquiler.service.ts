@@ -65,9 +65,17 @@ export class AlquilerService {
   }
 
   async getAllAlquileres(): Promise<AlquilerDTO[]> {
-    const list = await this.alquilerRepository.find({ relations: ['cliente', 'car','pagos'] })
-    return list.map(alquiler => AlquilerDTO.toDTO(alquiler))
 
+    const list = await this.alquilerRepository
+    .createQueryBuilder('alquiler')
+    .leftJoinAndSelect('alquiler.cliente', 'cliente', 'cliente.deletedAt IS NOT NULL OR cliente.deletedAt IS NULL')
+    .leftJoinAndSelect('alquiler.car', 'car', 'car.deletedAt IS NOT NULL OR car.deletedAt IS NULL')
+    .leftJoinAndSelect('alquiler.pagos', 'pagos')
+    .withDeleted()
+    .where('alquiler.deletedAt IS NULL')
+    .getMany();
+
+  return list.map(alquiler => AlquilerDTO.toDTO(alquiler));
   }
 
   async getAllAlquileresBetween(fechaRetiro, fechaDevolucion): Promise<Alquiler[]> {
@@ -98,7 +106,7 @@ export class AlquilerService {
   async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: number): Promise<AlquilerDTO> {
     try {
       const alquilerExistente: Alquiler = await this.getAlquilerEntityById(alquilerId);
-      if(!alquilerExistente){
+      if (!alquilerExistente) {
         throw new BadRequestException("Alquiler no encontrado")
       }
       console.log(`------------[Alquiler con id ${alquilerId} encontrado:]------------`)
@@ -161,7 +169,7 @@ export class AlquilerService {
       console.log(`------------[Error al modificar el alquiler con id ${alquilerId}]------------`)
       console.error(e)
     }
-    
+
   }
 
   async deleteAlquiler(id: number): Promise<AlquilerDTO> {
@@ -171,6 +179,6 @@ export class AlquilerService {
     const response = await this.alquilerRepository.softRemove(alquiler);
     console.log("Response", response)
     return alquiler;
-}
+  }
 
 }
