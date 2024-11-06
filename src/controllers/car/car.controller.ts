@@ -52,4 +52,9 @@ export class CarController {
     return this.carService.getCarById(id);
   }
 
+  @Get("withdeleted/car/:id")
+  getCarByIdWithDeleted(@Param('id') id: number): Promise<Car> {
+    return this.carService.getCarByIdWithDeleted(id);
+  }
+
 }

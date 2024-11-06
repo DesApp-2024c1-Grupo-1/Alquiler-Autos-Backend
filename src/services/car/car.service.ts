@@ -63,6 +63,22 @@ export class CarService {
         return car;
     }
 
+    async getCarByIdWithDeleted(id: number): Promise<Car> {
+        console.log("getCarById, id: ", id);
+    
+        const car: Car = await this.carRepository
+            .createQueryBuilder('car')
+            .where('car.id = :id', { id })
+            .withDeleted()
+            .getOne();
+    
+        if (!car) {
+            throw new NotFoundException("Car not found");
+        }
+    
+        return car;
+    }
+
     // async getPatente(patente: string): Promise<Car>{
     //     console.log("getPatente, patente: ", patente)
 
