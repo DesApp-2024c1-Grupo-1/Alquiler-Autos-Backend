@@ -75,6 +75,9 @@ Para iniciar el servidor en modo de desarrollo, ejecuta:
    npm start
    ```
 
+El proyecto seguirá andando mientras que este terminal no se cierre.
+
+Si quisiéramos finalizar, simplemente realizamos la combinación de teclas “ctrl+c” dentro del terminal.
 
 
 
