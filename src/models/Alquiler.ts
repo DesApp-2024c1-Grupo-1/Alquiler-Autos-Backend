@@ -4,12 +4,13 @@ import { Cliente } from "./Cliente";
 import { Evento } from "./Evento";
 import { AlquilerDTO } from "./DTO/AlquilerDTO";
 import { Pago } from "./Pago";
+import { EventoAlquiler } from "./EventoAlquiler";
 
 @Entity()
 export class Alquiler {
 
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column({type: 'timestamp', nullable: true})
     fechaRetiro: Date;
@@ -35,7 +36,7 @@ export class Alquiler {
     @ManyToOne(() => Cliente, cliente => cliente.alquiler,{cascade: true})
     cliente: Cliente;
 
-    @OneToMany(() => Evento, (evento) => evento.alquiler,{cascade: true})
+    @OneToMany(() => EventoAlquiler, (evento) => evento.alquiler,{cascade: true})
     eventos: Evento[];
 
     @OneToMany(() => Pago, (pago) => pago.alquiler,{cascade: true})

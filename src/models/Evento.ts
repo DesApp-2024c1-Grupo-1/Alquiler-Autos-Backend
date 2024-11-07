@@ -1,9 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, DeleteDateColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, DeleteDateColumn, TableInheritance } from "typeorm";
 import { EventoTypeEnum } from "./enums/EventoTypeEnum";
 import { Alquiler } from "./Alquiler";
 import { EventoDTO } from "./DTO/EventoDTO";
+import { Reparacion } from "./Reparacion";
 
 @Entity()
+@TableInheritance({ column: { type: "varchar", name: "tipo_evento" } })
 export class Evento {
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -20,13 +22,6 @@ export class Evento {
     @Column()
     type: EventoTypeEnum;
 
-    @Column()
-    entidadId: number;
-
-    @ManyToOne(() => Alquiler, (alquiler) => alquiler.eventos)
-    @JoinColumn({ name: "entidadId" })
-    alquiler: Alquiler;
-
     @DeleteDateColumn()
     deletedAt: Date; 
 
@@ -39,8 +34,8 @@ export class Evento {
         eventoEntity.text = evento.text;
         eventoEntity.color = evento.color;
         eventoEntity.type = evento.type;
-        eventoEntity.entidadId = evento.entidadId;
-        eventoEntity.alquiler = Alquiler.toEntity(evento.alquiler);
+        // eventoEntity.entidadId = evento.entidadId;
+        // eventoEntity.alquiler = Alquiler.toEntity(evento.alquiler);
         return eventoEntity;
     }
 

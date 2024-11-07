@@ -2,7 +2,7 @@ import { Controller, Post, Body, Patch, Param, Get } from '@nestjs/common';
 import { ReparacionService} from 'src/services/reparacion/reparacion.service';
 import { ReparacionDTO } from 'src/models/DTO/ReparacionDTO';
 
-@Controller('reparaciones')
+@Controller('reparacion')
 export class ReparacionController {
     constructor(private readonly reparacionService: ReparacionService) {}
 
@@ -15,7 +15,7 @@ export class ReparacionController {
     // Finalizar una reparación
     @Patch(':id/finalizar')
     async finalizarReparacion(
-        @Param('id') id: number,
+        @Param('id') id: string,
         @Body('fechaFin') fechaFin: Date,
     ) {
         return await this.reparacionService.finalizarReparacion(id, fechaFin);

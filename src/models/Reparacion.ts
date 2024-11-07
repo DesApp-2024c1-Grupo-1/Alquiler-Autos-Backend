@@ -1,12 +1,14 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
 import { Car } from "./Car";
 import { ReparacionDTO } from "./DTO/ReparacionDTO";
+import { Evento } from "./Evento";
+import { EventoReparacion } from "./EventoReparacion";
 
 @Entity()
 export class Reparacion {
 
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column({type: 'timestamp', nullable: true})
     fechaInicio: Date;
@@ -22,6 +24,9 @@ export class Reparacion {
 
     @ManyToOne(() => Car, car => car.alquiler)
     car: Car;
+
+    @OneToMany(() => EventoReparacion, (evento) => evento.reparacion,{cascade: true})
+    eventos: Evento[];
 
     static toEntity(ReparacionDTO: ReparacionDTO): Reparacion {
         const entity = new Reparacion();

@@ -21,7 +21,7 @@ export class AlquilerController {
     }
 
     @Get(':id')
-    getAlquilerById(@Param('id') id: number): Promise<AlquilerDTO>{
+    getAlquilerById(@Param('id') id: string): Promise<AlquilerDTO>{
         return this.alquilerService.getAlquilerDTOById(id);
     }
 
@@ -31,12 +31,12 @@ export class AlquilerController {
     }
 
     @Put(':id')
-    putAlquilerByEventoId(@Body() alquilerDTO: AlquilerDTO, @Param('id') alquilerId: number): Promise<AlquilerDTO>{
+    putAlquilerByEventoId(@Body() alquilerDTO: AlquilerDTO, @Param('id') alquilerId: string): Promise<AlquilerDTO>{
         return this.alquilerService.putAlquilerById(alquilerDTO,alquilerId);
     }
 
     @Delete(":id")
-    deleteAlquiler(@Param('id') id: number): Promise<AlquilerDTO> {
+    deleteAlquiler(@Param('id') id: string): Promise<AlquilerDTO> {
       return this.alquilerService.deleteAlquiler(id);
     }
 

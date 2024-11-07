@@ -16,7 +16,7 @@ export class PagoService {
 
     ) { }
 
-    async registrarPago(id:number, pago: PagoDTO): Promise<Pago> {
+    async registrarPago(id:string, pago: PagoDTO): Promise<Pago> {
 
         console.log("----------------[Service registrarPago]--------------------")
 

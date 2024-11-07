@@ -1,8 +1,11 @@
 import { Car } from "../Car";
 
 export class ReparacionDTO {
+    static toDTO(value: any): any {
+        throw new Error("Method not implemented.");
+    }
 
-    id?: number;
+    id?: string;
 
     fechaInicio?: Date;
 
