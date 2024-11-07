@@ -1,3 +1,7 @@
+# <p align="center">Desarrollo de aplicaciones- Universidad Nacional de Hurlingham</p>
+# <p align="center">Proyecto de Alquiler de Autos - Backend</p>
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -5,8 +9,9 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
+ <p align="center">Un framework de <a href="http://nodejs.org" target="_blank">Node.js</a> para construir aplicaciones del lado del servidor eficientes y escalables.</p>
+<p align="center">
+
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
@@ -22,52 +27,55 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Índice
+- [Clonación del Repositorio](#clonación-del-repositorio)
+- [Instalación](#instalación)
+- [Configuración de Base de Datos](#configuración-de-base-de-datos)
+- [Ejecución del Servidor](#ejecución-del-servidor)
 
-```bash
-$ npm install
-```
+---
 
-## Running the app
+### Clonación del Repositorio
 
-```bash
-# development
-$ npm run start
+1. Crea una carpeta en tu computadora, esta va a contener el proyecto.
+2. Abre una terminal en esa carpeta.
+3. Clona el repositorio ejecutando el siguiente comando:
 
-# watch mode
-$ npm run start:dev
+   ```bash
+   git clone https://github.com/DesApp-2024c1-Grupo-1/Alquiler-Autos-Backend
+    ```
 
-# production mode
-$ npm run start:prod
-```
+### Instalación
+Una vez clonado el repositorio, navega a la carpeta del proyecto:
 
-## Test
+   ```bash
+   cd Alquiler-Autos-Backend
+   ```
 
-```bash
-# unit tests
-$ npm run test
+Instala las dependencias necesarias:
 
-# e2e tests
-$ npm run test:e2e
+   ```bash
+   npm install
+   ```
 
-# test coverage
-$ npm run test:cov
-```
+### Configuración de Base de Datos
+1. Crea una base de datos en tu sistema de administración de bases de datos (puede ser MySQL, PostgreSQL, etc.).
 
-## Support
+2. En la raíz del proyecto, crea un archivo .env.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+3. Agrega la URL de conexión de tu base de datos en el archivo .env
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Ejecución del Servidor
+Para iniciar el servidor en modo de desarrollo, ejecuta:
 
-## License
+  ```bash
+   npm start
+   ```
 
-Nest is [MIT licensed](LICENSE).
+
+
+
+
