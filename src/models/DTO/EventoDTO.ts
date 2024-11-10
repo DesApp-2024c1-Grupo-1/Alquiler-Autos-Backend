@@ -20,10 +20,11 @@ export class EventoDTO{
 
     type: EventoTypeEnum;
 
-    @Transform((alquiler) => AlquilerDTO.toDTO(alquiler.value))
+
+    @Transform((alquiler) => AlquilerDTO.toDTO(alquiler.value)) //TODO: Arreglar el toDTO
     alquiler: AlquilerDTO;
 
-    @Transform((reparacion) => ReparacionDTO.toDTO(reparacion.value))
+    @Transform((reparacion) => ReparacionDTO.toDTO(reparacion.value)) //TODO: Arreglar el toDTO
     reparacion: ReparacionDTO;
 
     constructor() {}
@@ -37,8 +38,8 @@ export class EventoDTO{
         eventoDTO.text = evento.text;
         eventoDTO.color = evento.color;
         eventoDTO.type = evento.type;
-        // eventoDTO.entidadId = evento.entidadId;
-        // eventoDTO.reparacion = AlquilerDTO.toDTO(evento.reparacion);
+        eventoDTO.alquiler = evento?.alquiler ? AlquilerDTO.toDTO(evento.alquiler) : null;
+        eventoDTO.reparacion = evento?.reparacion ? ReparacionDTO.toDTO(evento.reparacion) : null;
         console.log("----------------[Evento toDTO - Fin]----------------")
         return eventoDTO;
     }

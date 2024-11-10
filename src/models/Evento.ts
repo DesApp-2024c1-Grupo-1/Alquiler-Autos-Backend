@@ -7,6 +7,7 @@ import { Reparacion } from "./Reparacion";
 @Entity()
 @TableInheritance({ column: { type: "varchar", name: "tipo_evento" } })
 export class Evento {
+    [x: string]: any;
     @PrimaryGeneratedColumn('increment')
     id: number;
 

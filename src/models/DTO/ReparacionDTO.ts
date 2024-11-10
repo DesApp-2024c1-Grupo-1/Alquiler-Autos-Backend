@@ -1,9 +1,7 @@
 import { Car } from "../Car";
+import { Reparacion } from "../Reparacion";
 
 export class ReparacionDTO {
-    static toDTO(value: any): any {
-        throw new Error("Method not implemented.");
-    }
 
     id?: string;
 
@@ -16,5 +14,15 @@ export class ReparacionDTO {
     razon?: string;
     
     car?: Car;
+
+    static toDTO(reparacionEntity: Reparacion): any {
+        const dto = new ReparacionDTO();
+        dto.id = reparacionEntity.id;
+        dto.fechaInicio = reparacionEntity.fechaInicio;
+        dto.fechaFin = reparacionEntity.fechaFin;
+        dto.cantidadDias = reparacionEntity.cantidadDias;
+        dto.car = reparacionEntity.car;
+        return dto;
+    }
 
 }
