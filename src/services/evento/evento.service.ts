@@ -81,7 +81,7 @@ export class EventoService {
 
     async findEventosbyAlquiler(alquiler: AlquilerDTO): Promise<EventoAlquiler[]> {
         return this.eventoAlquilerRepository.find({where:
-            { alquiler: alquiler,  type: In([EventoTypeEnum.Devolucion_Alquiler, EventoTypeEnum.Retiro_Alquiler])}
+            { alquiler: alquiler,  momento: In([EventoTypeEnum.Devolucion_Alquiler, EventoTypeEnum.Retiro_Alquiler])}
 
         });
     }
