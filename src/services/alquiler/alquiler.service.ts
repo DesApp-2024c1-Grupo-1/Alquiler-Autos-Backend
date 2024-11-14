@@ -9,6 +9,7 @@ import { ClienteDTO } from 'src/models/DTO/ClienteDTO';
 import { Evento } from 'src/models/Evento';
 import { EventoTypeEnum } from 'src/models/enums/EventoTypeEnum';
 import { Cliente } from 'src/models/Cliente';
+import { EventoAlquiler } from 'src/models/EventoAlquiler';
 
 
 @Injectable()
@@ -117,7 +118,7 @@ export class AlquilerService {
       console.log(clienteExistente)
 
       //Busca los eventos antes de modificar el alquiler
-      const eventosDelAlquiler = await this.eventoService.findEventosbyAlquiler(alquilerExistente);
+      const eventosDelAlquiler: EventoAlquiler[] = await this.eventoService.findEventosbyAlquiler(alquilerExistente);
       console.log(`------------[Eventos del alquiler encontrados:]------------`)
       console.log(eventosDelAlquiler)
 
@@ -143,13 +144,12 @@ export class AlquilerService {
       const eventosModificados = []
 
       eventosDelAlquiler.forEach(evento => {
-        if (evento.type == EventoTypeEnum.Retiro_Alquiler) {
+        if (evento.momento == EventoTypeEnum.Retiro_Alquiler) {
           evento.fecha = alquilerExistente.fechaRetiro;
-        } else if (evento.type === EventoTypeEnum.Devolucion_Alquiler) {
+        } else if (evento.momento === EventoTypeEnum.Devolucion_Alquiler) {
           evento.fecha = alquilerExistente.fechaDevolucion;
         }
         evento.alquiler = alquilerExistente;
-        evento.entidadId = alquilerExistente.id;
         eventosModificados.push(evento);
       })
 
