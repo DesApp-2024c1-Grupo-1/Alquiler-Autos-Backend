@@ -136,9 +136,9 @@ export class AlquilerService {
       const eventosModificados = []
 
       eventosDelAlquiler.forEach(evento => {
-        if (evento.type == EventoTypeEnum.Retiro_Alquiler) {
+        if (evento.momento == EventoTypeEnum.Retiro_Alquiler) {
           evento.fecha = alquilerExistente.fechaRetiro;
-        } else if (evento.type === EventoTypeEnum.Devolucion_Alquiler) {
+        } else if (evento.momento === EventoTypeEnum.Devolucion_Alquiler) {
           evento.fecha = alquilerExistente.fechaDevolucion;
         }
         evento.alquiler = alquilerExistente;

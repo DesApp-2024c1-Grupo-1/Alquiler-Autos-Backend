@@ -34,14 +34,14 @@ export class EventoService {
             eventoRetiro.fecha = alquiler.fechaRetiro,
             eventoRetiro.text = EventoTypeEnum.Retiro_Alquiler + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
             eventoRetiro.color = "#00ff00", 
-            eventoRetiro.type = EventoTypeEnum.Retiro_Alquiler,
+            eventoRetiro.momento = EventoTypeEnum.Retiro_Alquiler,
             eventoRetiro.alquiler = alquiler;
         
         const eventoDevolucion = new EventoAlquiler()
             eventoDevolucion.fecha = alquiler.fechaDevolucion,
             eventoDevolucion.text = EventoTypeEnum.Devolucion_Alquiler + " " + alquiler.car.brand + " " + alquiler.car.name + " - " + alquiler.car.patente, 
             eventoDevolucion.color = "#ff0000", 
-            eventoDevolucion.type = EventoTypeEnum.Devolucion_Alquiler,
+            eventoDevolucion.momento = EventoTypeEnum.Devolucion_Alquiler,
             eventoDevolucion.alquiler = alquiler;
         
         const eventos: Evento[] = [eventoRetiro, eventoDevolucion];
@@ -54,14 +54,14 @@ export class EventoService {
             eventoRetiro.fecha = reparacion.fechaInicio,
             eventoRetiro.text = EventoTypeEnum.Retiro_Reparacion + " " + reparacion.car.brand + " " + reparacion.car.name + " - " + reparacion.car.patente, 
             eventoRetiro.color = "#FF6347", 
-            eventoRetiro.type = EventoTypeEnum.Retiro_Reparacion,
+            eventoRetiro.momento = EventoTypeEnum.Retiro_Reparacion,
             eventoRetiro.reparacion = reparacion;
         
         const eventoDevolucion = new EventoReparacion()
             eventoDevolucion.fecha = reparacion.fechaFin,
             eventoDevolucion.text = EventoTypeEnum.Devolucion_Reparacion + " " + reparacion.car.brand + " " + reparacion.car.name + " - " + reparacion.car.patente, 
             eventoDevolucion.color = "#4682B4", 
-            eventoDevolucion.type = EventoTypeEnum.Devolucion_Reparacion,
+            eventoDevolucion.momento = EventoTypeEnum.Devolucion_Reparacion,
             eventoDevolucion.reparacion = reparacion;
         
         const eventos: Evento[] = [eventoRetiro, eventoDevolucion];

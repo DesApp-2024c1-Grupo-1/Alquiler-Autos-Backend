@@ -21,7 +21,7 @@ export class Evento {
     color: string;
 
     @Column()
-    type: EventoTypeEnum;
+    momento: EventoTypeEnum;
 
     @DeleteDateColumn()
     deletedAt: Date; 
@@ -34,7 +34,7 @@ export class Evento {
         eventoEntity.fecha = evento.start || evento.end;
         eventoEntity.text = evento.text;
         eventoEntity.color = evento.color;
-        eventoEntity.type = evento.type;
+        eventoEntity.momento = evento.momento;
         // eventoEntity.entidadId = evento.entidadId;
         // eventoEntity.alquiler = Alquiler.toEntity(evento.alquiler);
         return eventoEntity;

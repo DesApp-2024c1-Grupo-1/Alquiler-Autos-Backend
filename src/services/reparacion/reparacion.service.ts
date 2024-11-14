@@ -17,7 +17,7 @@ export class ReparacionService {
         private readonly eventoService: EventoService,
     ) {}
 
-    async crearReparacion(reparacionDTO: ReparacionDTO): Promise<Reparacion> {
+    async crearReparacion(reparacionDTO: ReparacionDTO): Promise<ReparacionDTO> {
         console.log("Creando reparación", reparacionDTO)
         
         const reparacion = Reparacion.toEntity(reparacionDTO);
@@ -32,10 +32,12 @@ export class ReparacionService {
         reparacionConID.eventos = eventos
         console.log("Reparación con eventos", reparacionConID)
 
-        const alquilerPersistido = await this.reparacionRepository.save(reparacionConID);
-        console.log("Reparación persistida", alquilerPersistido)
+        const reparacionPersistida = await this.reparacionRepository.save(reparacionConID);
+        console.log("Reparación persistida", reparacionPersistida)
 
-        return alquilerPersistido;
+        const reparacionResponseDTO: ReparacionDTO = ReparacionDTO.toDTO(reparacionPersistida);
+
+        return reparacionResponseDTO;
     }
 
     // async postAlquiler(alquilerDTO: AlquilerDTO): Promise<AlquilerDTO> {

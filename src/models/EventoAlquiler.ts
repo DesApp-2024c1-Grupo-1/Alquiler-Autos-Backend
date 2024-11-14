@@ -13,7 +13,7 @@ export class EventoAlquiler extends Evento {
     
 
     @Column()
-    type: EventoTypeEnum;
+    momento: EventoTypeEnum;
 
 
     static toEntity(evento:EventoDTO): Evento{
@@ -22,7 +22,7 @@ export class EventoAlquiler extends Evento {
         eventoEntity.fecha = evento.start || evento.end;
         eventoEntity.text = evento.text;
         eventoEntity.color = evento.color;
-        eventoEntity.type = evento.type;
+        eventoEntity.momento = evento.momento;
         // eventoEntity.entidadId = evento.entidadId;
         eventoEntity.alquiler = Alquiler.toEntity(evento.alquiler);
         return eventoEntity;

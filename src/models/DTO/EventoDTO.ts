@@ -18,7 +18,7 @@ export class EventoDTO{
 
     color: string;
 
-    type: EventoTypeEnum;
+    momento: EventoTypeEnum;
 
 
     @Transform((alquiler) => AlquilerDTO.toDTO(alquiler.value)) //TODO: Arreglar el toDTO
@@ -37,7 +37,7 @@ export class EventoDTO{
         eventoDTO.end = evento.fecha;
         eventoDTO.text = evento.text;
         eventoDTO.color = evento.color;
-        eventoDTO.type = evento.type;
+        eventoDTO.momento = evento.momento;
         eventoDTO.alquiler = evento?.alquiler ? AlquilerDTO.toDTO(evento.alquiler) : null;
         eventoDTO.reparacion = evento?.reparacion ? ReparacionDTO.toDTO(evento.reparacion) : null;
         console.log("----------------[Evento toDTO - Fin]----------------")
