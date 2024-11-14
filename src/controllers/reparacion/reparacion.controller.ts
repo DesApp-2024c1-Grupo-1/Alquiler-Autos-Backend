@@ -15,7 +15,7 @@ export class ReparacionController {
     // Finalizar una reparación
     @Patch(':id/finalizar')
     async finalizarReparacion(
-        @Param('id') id: string,
+        @Param('id') id: number,
         @Body('fechaFin') fechaFin: Date,
     ) {
         return await this.reparacionService.finalizarReparacion(id, fechaFin);

@@ -58,7 +58,7 @@ export class ReparacionService {
     //     return alquilerResponseDTO;
     //   }
 
-    async finalizarReparacion(id: string, fechaFin: Date): Promise<Reparacion> {
+    async finalizarReparacion(id: number, fechaFin: Date): Promise<Reparacion> {
         const reparacion = await this.reparacionRepository.findOne({ where: { id } });
         if (!reparacion) {
             throw new Error('Reparación no encontrada');

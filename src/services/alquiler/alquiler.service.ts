@@ -54,13 +54,13 @@ export class AlquilerService {
     return alquilerResponseDTO;
   }
 
-  async getAlquilerDTOById(id: string): Promise<AlquilerDTO> {
+  async getAlquilerDTOById(id: number): Promise<AlquilerDTO> {
     console.log(`------------[getAlquilerDTOById ${id}]------------`)
     const entity = await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos'], where: { id } });
     return AlquilerDTO.toDTO(entity);
   }
 
-  async getAlquilerEntityById(id: string): Promise<Alquiler> {
+  async getAlquilerEntityById(id: number): Promise<Alquiler> {
     console.log(`------------[getAlquilerEntityById ${id}]------------`)
     return await this.alquilerRepository.findOneOrFail({ relations: ['cliente', 'car', 'pagos', 'eventos'], where: { id } });
   }
@@ -96,7 +96,7 @@ export class AlquilerService {
     );
   }
 
-  async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: string): Promise<AlquilerDTO> {
+  async putAlquilerById(alquilerDTO: AlquilerDTO, alquilerId: number): Promise<AlquilerDTO> {
     try {
       const alquilerExistente: Alquiler = await this.getAlquilerEntityById(alquilerId);
       if(!alquilerExistente){
@@ -164,7 +164,7 @@ export class AlquilerService {
     
   }
 
-  async deleteAlquiler(id: string): Promise<AlquilerDTO> {
+  async deleteAlquiler(id: number): Promise<AlquilerDTO> {
     console.log("Service deleteCar", id)
     let alquiler: Alquiler = await this.getAlquilerEntityById(id);
     console.log("Alquiler", alquiler)

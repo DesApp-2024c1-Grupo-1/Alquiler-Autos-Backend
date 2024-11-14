@@ -9,8 +9,8 @@ import { EventoAlquiler } from "./EventoAlquiler";
 @Entity()
 export class Alquiler {
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
     @Column({type: 'timestamp', nullable: true})
     fechaRetiro: Date;

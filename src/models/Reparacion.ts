@@ -7,8 +7,8 @@ import { EventoReparacion } from "./EventoReparacion";
 @Entity()
 export class Reparacion {
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
     @Column({type: 'timestamp', nullable: true})
     fechaInicio: Date;

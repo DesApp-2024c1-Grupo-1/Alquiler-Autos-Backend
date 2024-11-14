@@ -3,7 +3,7 @@ import { Reparacion } from "../Reparacion";
 
 export class ReparacionDTO {
 
-    id?: string;
+    id?: number;
 
     fechaInicio?: Date;
 

@@ -7,7 +7,7 @@ import { Pago } from "../Pago";
 
 export class AlquilerDTO {
 
-    id?: string;
+    id?: number;
 
     fechaRetiro?: Date;
 
