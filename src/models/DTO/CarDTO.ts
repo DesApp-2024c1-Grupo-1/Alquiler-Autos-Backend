@@ -37,5 +37,7 @@ export class CarDTO {
 
     reservado?: boolean;
 
+    enReparacion?: boolean;
+
 }
 
