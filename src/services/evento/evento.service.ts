@@ -53,7 +53,7 @@ export class EventoService {
         const eventoRetiro = new EventoReparacion()
             eventoRetiro.fecha = reparacion.fechaInicio,
             eventoRetiro.text = EventoTypeEnum.Retiro_Reparacion + " " + reparacion.car.brand + " " + reparacion.car.name + " - " + reparacion.car.patente, 
-            eventoRetiro.color = "#FF6347", 
+            eventoRetiro.color = "#4682B4", 
             eventoRetiro.momento = EventoTypeEnum.Retiro_Reparacion,
             eventoRetiro.reparacion = reparacion;
         
