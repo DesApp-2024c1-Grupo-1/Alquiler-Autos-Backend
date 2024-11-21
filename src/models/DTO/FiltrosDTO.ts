@@ -30,7 +30,7 @@ export class FiltrosDTO {
     @IsOptional()
     @Transform(({ value }) => isNaN(parseInt(value,10)) ? 1 : value) //Si no es un numero, se setea en 1
     @Min(1, {message: 'La capacidad debe ser un numero mayor a 1'})
-    @Max(5, {message: 'La capacidad debe ser un numero menor a 6'})
+    @Max(10, {message: 'La capacidad debe ser un numero menor a 6'})
     // @Validate(isNumberStringConstraint, {message: 'La capacidad debe ser un numero entre 2 y 5'})
     capacidad: number;
 
