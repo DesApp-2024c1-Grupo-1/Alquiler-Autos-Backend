@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reparacion } from 'src/models/Reparacion';
 import { ReparacionDTO } from 'src/models/DTO/ReparacionDTO';
@@ -40,23 +40,30 @@ export class ReparacionService {
         return reparacionResponseDTO;
     }
 
-    // async postAlquiler(alquilerDTO: AlquilerDTO): Promise<AlquilerDTO> {
-
-    //     const alquilerCreado: Alquiler = this.alquilerRepository.create(alquilerDTO);
-    //     const eventos: Evento[] = await this.eventoService.createEventosFromAlquiler(alquilerCreado);
+    async getAllReparacionesBetween(fechaInicio, fechaFin): Promise<Reparacion[]> {
+        console.log("Buscando reparacion del ", fechaInicio, " al ", fechaFin)
     
-    //     console.log("Eventos creados", eventos)
-    
-    //     alquilerCreado.eventos = eventos
-    
-    //     const alquilerEntidad = await this.alquilerRepository.save(alquilerCreado);
-    //     const alquilerResponseDTO: AlquilerDTO = AlquilerDTO.toDTO(alquilerEntidad);
-    
-    //     console.log("--------------------[Alquiler guardado]----------------------")
-    //     console.log(alquilerResponseDTO)
-    
-    //     return alquilerResponseDTO;
-    //   }
+        return this.reparacionRepository.find({
+        where: [
+                {
+                    fechaInicio: Between(fechaInicio, fechaFin),
+                },
+                {
+                    fechaFin: Between(fechaInicio, fechaFin),
+                },
+                {
+                    fechaInicio: LessThanOrEqual(fechaInicio),
+                    fechaFin: MoreThanOrEqual(fechaInicio),
+                },
+                {
+                    fechaInicio: LessThanOrEqual(fechaFin),
+                    fechaFin: MoreThanOrEqual(fechaFin),
+                },
+            ],
+        relations: ['car']
+        }
+        );
+      }
 
     async finalizarReparacion(id: number, fechaFin: Date): Promise<Reparacion> {
         const reparacion = await this.reparacionRepository.findOne({ where: { id } });

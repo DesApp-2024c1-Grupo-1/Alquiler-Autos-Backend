@@ -10,10 +10,10 @@ export class Reparacion {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({type: 'timestamp', nullable: true})
+    @Column({nullable: true})
     fechaInicio: Date;
 
-    @Column({type: 'timestamp', nullable: true})
+    @Column({nullable: true})
     fechaFin: Date;
 
     @Column()
