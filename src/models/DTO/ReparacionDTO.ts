@@ -22,6 +22,7 @@ export class ReparacionDTO {
         dto.fechaFin = reparacionEntity.fechaFin;
         dto.cantidadDias = reparacionEntity.cantidadDias;
         dto.car = reparacionEntity.car;
+        dto.razon = reparacionEntity.razon;
         return dto;
     }
 
