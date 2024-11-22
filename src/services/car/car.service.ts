@@ -5,6 +5,7 @@ import { MoreThanOrEqual } from 'typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
 import { AlquilerService } from '../alquiler/alquiler.service';
+import { ReparacionService} from '../reparacion/reparacion.service';
 import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
 import { CarDTO } from 'src/models/DTO/CarDTO';
 
@@ -13,7 +14,8 @@ export class CarService {
  
     constructor(
         @InjectRepository(Car) private readonly carRepository: Repository<Car>,
-        private readonly alquilerService: AlquilerService
+        private readonly alquilerService: AlquilerService,
+        private readonly reparacionService: ReparacionService
     ) { }
 
     async getAllCarAvailable(filtros:FiltrosDTO): Promise<CarDTO[]> {
@@ -27,15 +29,32 @@ export class CarService {
         const alquileresSolapados: AlquilerDTO[] = await this.alquilerService.getAllAlquileresBetween(filtros.fechaRetiro, filtros.fechaDevolucion);
         console.log("Alquileres solapados", alquileresSolapados)
         //Se obtienen los ids de autos que estan en los alquileres solapados
-        const idsAutosNoDisponibles = new Set(alquileresSolapados.map(alquiler => alquiler.car.id));
+        const idsAutosEnAlquiler = new Set(alquileresSolapados.map(alquiler => alquiler.car.id));
 
-        console.log("Autos no disponibles", idsAutosNoDisponibles)
+        console.log("Autos no disponibles", idsAutosEnAlquiler)
 
         //Se obtienen los autos segun los filtros
         let autosFiltrados: CarDTO[] = await this.carRepository.findBy({ ac: filtros.ac, combustible: filtros.combustible, transmision: filtros.transmision, capacidad: MoreThanOrEqual(filtros.capacidad)})
 
-        //Se marcan los autos no disponibles como reservados
-        autosFiltrados.forEach(auto => idsAutosNoDisponibles.has(auto.id) ? auto.reservado = true : auto.reservado = false);
+
+        //Busca las reparaciones asignadas a autos que cuyo rango de fechas se solapan con el rango de fechas de los filtros
+        const reparacionesSolapadas: AlquilerDTO[] = await this.reparacionService.getAllReparacionesBetween(filtros.fechaRetiro, filtros.fechaDevolucion);
+        console.log("reparaciones solapados", reparacionesSolapadas)
+        //Se obtienen los ids de autos que estan en las reparaciones solapados
+        const idsAutosEnReparacion = new Set(reparacionesSolapadas.map(reparacion => reparacion.car.id));
+
+        console.log("Autos no disponibles", idsAutosEnReparacion)
+
+
+        //Se marcan los autos no disponibles como reservados por alquiler
+        autosFiltrados.forEach(auto => idsAutosEnAlquiler.has(auto.id) ? auto.reservado = true : auto.reservado = false);
+
+
+        //Se marcan los autos no disponibles como en reparacion
+        autosFiltrados.forEach(auto => idsAutosEnReparacion.has(auto.id) ? auto.enReparacion = true : auto.enReparacion = false);
+
+
+
 
         return autosFiltrados;
     }
@@ -60,6 +79,22 @@ export class CarService {
             throw new NotFoundException("Car not found");
         }
 
+        return car;
+    }
+
+    async getCarByIdWithDeleted(id: number): Promise<Car> {
+        console.log("getCarById, id: ", id);
+    
+        const car: Car = await this.carRepository
+            .createQueryBuilder('car')
+            .where('car.id = :id', { id })
+            .withDeleted()
+            .getOne();
+    
+        if (!car) {
+            throw new NotFoundException("Car not found");
+        }
+    
         return car;
     }
 

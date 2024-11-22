@@ -3,6 +3,7 @@ import { Alquiler } from "../Alquiler";
 import { EventoTypeEnum } from "../enums/EventoTypeEnum";
 import { Evento } from "../Evento";
 import { AlquilerDTO } from "./AlquilerDTO";
+import { ReparacionDTO } from "./ReparacionDTO";
 
 
 export class EventoDTO{
@@ -17,12 +18,14 @@ export class EventoDTO{
 
     color: string;
 
-    type: EventoTypeEnum;
+    momento: EventoTypeEnum;
 
-    entidadId: number;
 
-    @Transform((alquiler) => AlquilerDTO.toDTO(alquiler.value))
+    @Transform((alquiler) => AlquilerDTO.toDTO(alquiler.value)) //TODO: Arreglar el toDTO
     alquiler: AlquilerDTO;
+
+    @Transform((reparacion) => ReparacionDTO.toDTO(reparacion.value)) //TODO: Arreglar el toDTO
+    reparacion: ReparacionDTO;
 
     constructor() {}
 
@@ -34,10 +37,9 @@ export class EventoDTO{
         eventoDTO.end = evento.fecha;
         eventoDTO.text = evento.text;
         eventoDTO.color = evento.color;
-        eventoDTO.type = evento.type;
-        eventoDTO.entidadId = evento.entidadId;
-        console.log("Prueba 0")
-        eventoDTO.alquiler = AlquilerDTO.toDTO(evento.alquiler);
+        eventoDTO.momento = evento.momento;
+        eventoDTO.alquiler = evento?.alquiler ? AlquilerDTO.toDTO(evento.alquiler) : null;
+        eventoDTO.reparacion = evento?.reparacion ? ReparacionDTO.toDTO(evento.reparacion) : null;
         console.log("----------------[Evento toDTO - Fin]----------------")
         return eventoDTO;
     }

@@ -34,11 +34,9 @@ export class AlquilerDTO {
     pagos? : Pago[];
 
     static toDTO(alquilerEntity: Alquiler): any {
-        console.log("Prueba 0.5", alquilerEntity)
         if(!alquilerEntity.pagos){
             alquilerEntity.pagos = []
         }
-        console.log("Prueba 1")
         const dto = new AlquilerDTO();
         dto.id = alquilerEntity.id;
         dto.fechaRetiro = alquilerEntity.fechaRetiro;
@@ -49,10 +47,7 @@ export class AlquilerDTO {
         dto.cantidadDias = alquilerEntity.cantidadDias;
         dto.car = alquilerEntity.car;
         dto.cliente = alquilerEntity.cliente;
-        console.log("Prueba 2")
         dto.pagos = alquilerEntity.pagos;
-        console.log(alquilerEntity)
-        console.log("Pagos",alquilerEntity.pagos)
         dto.saldoPendiente = alquilerEntity.precioFinal - alquilerEntity.pagos.reduce((acc, pago) => acc + pago.monto, 0) //Calculo del saldo pendiente
         return dto;
     }

@@ -3,6 +3,7 @@ import { Alquiler } from "./Alquiler";
 import { combustibleEnum } from "./enums/CombustibleEnum";
 import { TransmisionEnum } from "./enums/TransmisionEnum";
 import { Delete } from "@nestjs/common";
+import { Reparacion } from "./Reparacion";
 
 @Entity()
 export class Car {
@@ -51,6 +52,9 @@ export class Car {
 
     @OneToMany(() => Alquiler, (alquiler) => alquiler.car)
     alquiler: Alquiler[];
+
+    @OneToMany(() => Reparacion, (reparacion) => reparacion.car)
+    reparacion: Reparacion[];
 
     @DeleteDateColumn()
     deletedAt: Date; 
