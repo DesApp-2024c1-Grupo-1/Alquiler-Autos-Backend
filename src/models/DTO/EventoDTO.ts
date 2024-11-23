@@ -30,7 +30,6 @@ export class EventoDTO{
     constructor() {}
 
     static toDTO(evento:Evento): EventoDTO{
-        console.log("----------------[Evento toDTO - Inicio]----------------")
         const eventoDTO = new EventoDTO();
         eventoDTO.id = evento.id;
         eventoDTO.start = evento.fecha;
@@ -40,7 +39,6 @@ export class EventoDTO{
         eventoDTO.momento = evento.momento;
         eventoDTO.alquiler = evento?.alquiler ? AlquilerDTO.toDTO(evento.alquiler) : null;
         eventoDTO.reparacion = evento?.reparacion ? ReparacionDTO.toDTO(evento.reparacion) : null;
-        console.log("----------------[Evento toDTO - Fin]----------------")
         return eventoDTO;
     }
 

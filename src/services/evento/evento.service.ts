@@ -22,9 +22,7 @@ export class EventoService {
     async getAllEventos(): Promise<EventoDTO[]> {
         console.log("----------------[getAllEventos]----------------")
         const listaEventos: any[] = await this.eventoRepository.find({ relations: ["alquiler", "alquiler.cliente","alquiler.car", "alquiler.pagos", "reparacion","reparacion.car"] });
-        console.log("Identificador ", listaEventos)
         const listaEventosDTO = listaEventos.map(evento => EventoDTO.toDTO(evento));
-        console.log("Lista EventosDTO: ", listaEventosDTO)
         
         return listaEventosDTO;
     }
