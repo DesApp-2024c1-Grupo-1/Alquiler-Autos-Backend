@@ -144,5 +144,21 @@ export class CarService {
         return new AvailabilityDTO(availability, eventosSuperpuestosDTO)
 
     }
+
+    async getCarAvailabilityByIdExcludingEvents(id: number, filtros: FiltrosDTO, alquilerId: number): Promise<AvailabilityDTO> {
+        const eventosSuperpuestos : Evento[] = await this.eventoService.getAllEventosFromCarBetween(id, filtros.fechaRetiro, filtros.fechaDevolucion);
+        const eventosSuperpuestosDTO = eventosSuperpuestos.map(evento => EventoDTO.toDTO(evento));
+
+        const findedAlquiler = await this.alquilerService.getAlquilerEntityById(alquilerId)
+        const eventosDelAlquiler = await this.eventoService.findEventosbyAlquiler(findedAlquiler)
+        const eventosDelAlquilerDTO = eventosDelAlquiler.map(evento => EventoDTO.toDTO(evento));
+        
+        const eventosSuperpuestosFiltrados = eventosSuperpuestosDTO.filter(evento => !eventosDelAlquilerDTO.some(eventoAlquiler => eventoAlquiler.id == evento.id))
+
+        const availability = eventosSuperpuestosFiltrados.length == 0
+
+        return new AvailabilityDTO(availability, eventosSuperpuestosFiltrados)
+
+    }
 }
 

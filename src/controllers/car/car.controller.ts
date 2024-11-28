@@ -64,4 +64,10 @@ export class CarController {
     return this.carService.getCarAvailabilityById(id,filtros);
   }
 
+  @Post('/car/:carId/available/excludingEvents/alquiler/:idAlquiler')
+  getCarAvailabilityByIdExcludingEvents(@Param('carId') carId: number,@Param('idAlquiler') idAlquiler: number, @Body() filtros:FiltrosDTO): Promise<AvailabilityDTO> {
+    console.log("--- car.controller : Verificando disponibilidad del auto ID: ", carId, "filtros: ", filtros, "Excluyendo: ", idAlquiler);
+    return this.carService.getCarAvailabilityByIdExcludingEvents(carId,filtros,idAlquiler);
+  }
+
 }
