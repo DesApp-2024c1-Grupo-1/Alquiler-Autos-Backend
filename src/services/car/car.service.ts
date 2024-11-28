@@ -1,13 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Car } from '../../models/Car';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual } from 'typeorm';
-import { Repository } from 'typeorm/repository/Repository';
-import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
-import { AlquilerService } from '../alquiler/alquiler.service';
-import { ReparacionService} from '../reparacion/reparacion.service';
-import { AlquilerDTO } from 'src/models/DTO/AlquilerDTO';
-import { CarDTO } from 'src/models/DTO/CarDTO';
+import {Injectable, NotFoundException} from '@nestjs/common';
+import {Car} from '../../models/Car';
+import {InjectRepository} from '@nestjs/typeorm';
+import {MoreThanOrEqual} from 'typeorm';
+import {Repository} from 'typeorm/repository/Repository';
+import {FiltrosDTO} from 'src/models/DTO/FiltrosDTO';
+import {AlquilerService} from '../alquiler/alquiler.service';
+import {ReparacionService} from '../reparacion/reparacion.service';
+import {AlquilerDTO} from 'src/models/DTO/AlquilerDTO';
+import {CarDTO} from 'src/models/DTO/CarDTO';
+import {AvailabilityDTO} from "../../models/DTO/AvailabilityDTO";
+import {EventoService} from "../evento/evento.service";
+import {EventoDTO} from "../../models/DTO/EventoDTO";
+import {Evento} from "../../models/Evento";
 
 @Injectable()
 export class CarService {
@@ -15,7 +19,8 @@ export class CarService {
     constructor(
         @InjectRepository(Car) private readonly carRepository: Repository<Car>,
         private readonly alquilerService: AlquilerService,
-        private readonly reparacionService: ReparacionService
+        private readonly reparacionService: ReparacionService,
+        private readonly eventoService: EventoService,
     ) { }
 
     async getAllCarAvailable(filtros:FiltrosDTO): Promise<CarDTO[]> {
@@ -130,5 +135,30 @@ export class CarService {
         return car;
     }
 
+    async getCarAvailabilityById(id: number, filtros: FiltrosDTO): Promise<AvailabilityDTO> {
+        const eventosSuperpuestos : Evento[] = await this.eventoService.getAllEventosFromCarBetween(id, filtros.fechaRetiro, filtros.fechaDevolucion);
+        const eventosSuperpuestosDTO = eventosSuperpuestos.map(evento => EventoDTO.toDTO(evento));
+
+        const availability = eventosSuperpuestos.length == 0
+
+        return new AvailabilityDTO(availability, eventosSuperpuestosDTO)
+
+    }
+
+    async getCarAvailabilityByIdExcludingEvents(id: number, filtros: FiltrosDTO, alquilerId: number): Promise<AvailabilityDTO> {
+        const eventosSuperpuestos : Evento[] = await this.eventoService.getAllEventosFromCarBetween(id, filtros.fechaRetiro, filtros.fechaDevolucion);
+        const eventosSuperpuestosDTO = eventosSuperpuestos.map(evento => EventoDTO.toDTO(evento));
+
+        const findedAlquiler = await this.alquilerService.getAlquilerEntityById(alquilerId)
+        const eventosDelAlquiler = await this.eventoService.findEventosbyAlquiler(findedAlquiler)
+        const eventosDelAlquilerDTO = eventosDelAlquiler.map(evento => EventoDTO.toDTO(evento));
+        
+        const eventosSuperpuestosFiltrados = eventosSuperpuestosDTO.filter(evento => !eventosDelAlquilerDTO.some(eventoAlquiler => eventoAlquiler.id == evento.id))
+
+        const availability = eventosSuperpuestosFiltrados.length == 0
+
+        return new AvailabilityDTO(availability, eventosSuperpuestosFiltrados)
+
+    }
 }
 

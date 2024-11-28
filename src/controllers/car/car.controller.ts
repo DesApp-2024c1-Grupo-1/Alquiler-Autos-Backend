@@ -5,6 +5,7 @@ import { FiltrosDTO } from 'src/models/DTO/FiltrosDTO';
 import { combustibleEnum } from 'src/models/enums/CombustibleEnum';
 import { TransmisionEnum } from 'src/models/enums/TransmisionEnum';
 import { CarDTO } from 'src/models/DTO/CarDTO';
+import {AvailabilityDTO} from "../../models/DTO/AvailabilityDTO";
 
 
 @Controller()
@@ -55,6 +56,18 @@ export class CarController {
   @Get("withdeleted/car/:id")
   getCarByIdWithDeleted(@Param('id') id: number): Promise<Car> {
     return this.carService.getCarByIdWithDeleted(id);
+  }
+
+  @Post('/car/:id/available')
+  getCarAvailabilityById(@Param('id') id: number, @Body() filtros:FiltrosDTO): Promise<AvailabilityDTO> {
+    console.log("--- car.controller : Verificando disponibilidad del auto ID: ", id, "filtros: ", filtros);
+    return this.carService.getCarAvailabilityById(id,filtros);
+  }
+
+  @Post('/car/:carId/available/excludingEvents/alquiler/:idAlquiler')
+  getCarAvailabilityByIdExcludingEvents(@Param('carId') carId: number,@Param('idAlquiler') idAlquiler: number, @Body() filtros:FiltrosDTO): Promise<AvailabilityDTO> {
+    console.log("--- car.controller : Verificando disponibilidad del auto ID: ", carId, "filtros: ", filtros, "Excluyendo: ", idAlquiler);
+    return this.carService.getCarAvailabilityByIdExcludingEvents(carId,filtros,idAlquiler);
   }
 
 }

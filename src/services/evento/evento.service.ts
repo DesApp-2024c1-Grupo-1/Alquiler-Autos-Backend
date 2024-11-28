@@ -9,7 +9,7 @@ import { EventoAlquiler } from 'src/models/EventoAlquiler';
 import { EventoReparacion } from 'src/models/EventoReparacion';
 import { Reparacion } from 'src/models/Reparacion';
 import { EventoTypeEnum } from 'src/models/enums/EventoTypeEnum';
-import { In, Repository } from 'typeorm';
+import {Between, In, LessThanOrEqual, MoreThanOrEqual, Repository} from 'typeorm';
 
 @Injectable()
 export class EventoService {
@@ -22,9 +22,7 @@ export class EventoService {
     async getAllEventos(): Promise<EventoDTO[]> {
         console.log("----------------[getAllEventos]----------------")
         const listaEventos: any[] = await this.eventoRepository.find({ relations: ["alquiler", "alquiler.cliente","alquiler.car", "alquiler.pagos", "reparacion","reparacion.car"] });
-        console.log("Identificador ", listaEventos)
         const listaEventosDTO = listaEventos.map(evento => EventoDTO.toDTO(evento));
-        console.log("Lista EventosDTO: ", listaEventosDTO)
         
         return listaEventosDTO;
     }
@@ -83,6 +81,29 @@ export class EventoService {
         return this.eventoAlquilerRepository.find({where:
             { alquiler: alquiler,  momento: In([EventoTypeEnum.Devolucion_Alquiler, EventoTypeEnum.Retiro_Alquiler])}
 
+        });
+    }
+
+    async getAllEventosFromCarBetween(carId, fechaInicio, fechaFin): Promise<Evento[]> {
+        console.log("Buscando Eventos del ", fechaInicio, " al ", fechaFin, " para el auto ", carId);
+
+        return this.eventoRepository.find({
+            where: [
+                {
+                    fecha: Between(fechaInicio, fechaFin),
+                    alquiler: { car: { id: carId } },
+                },
+                {
+                    fecha: Between(fechaInicio, fechaFin),
+                    reparacion: { car: { id: carId } },
+                },
+            ],
+            relations: [
+                'alquiler',
+                'alquiler.car',
+                'reparacion',
+                'reparacion.car',
+            ],
         });
     }
 
